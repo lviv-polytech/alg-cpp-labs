@@ -2,18 +2,9 @@
 
 using namespace std;
 
-int main() {
-	cout << "Hello, World!" << endl;
-	
-	int p = 1;
-	int i = 1;
-		
-	// Calculate factorial of 10
-	while (i <= 10) {
-		p *= i;
-		i++; // uncomment this line to fix the infinite loop
-	}
+void runFactorialLogic(std::istream& input, std::ostream& output);
 
-	cout << "P: " << p << " i: " << i << endl;
+int main() {
+	runFactorialLogic(cin, cout);
 	return 0;
 }

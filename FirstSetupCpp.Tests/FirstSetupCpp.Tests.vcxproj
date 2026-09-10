@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{870f8f40-f644-4380-af89-1c4ea25ae31f}</ProjectGuid>
-    <RootNamespace>FirstSetupCpp</RootNamespace>
+    <ProjectGuid>{aca6cf07-685f-4433-8220-aaa460dad2e2}</ProjectGuid>
+    <RootNamespace>FirstSetupCppTests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,12 +139,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="calculate_factorial.cpp" />
-    <ClCompile Include="FirstSetupCpp.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".gitignore" />
-    <None Include="README.md" />
+    <ClCompile Include="..\FirstSetupCpp\calculate_factorial.cpp" />
+    <ClCompile Include="factorial_and_print_test.cpp" />
+    <ClCompile Include="FirstSetupCpp.Tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
