@@ -1,0 +1,17 @@
+# config VS
+.vs/
+*.user
+*.suo
+
+# Compile dirs
+x64/
+x86/
+Debug/
+Release/
+
+# tmp
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.log
