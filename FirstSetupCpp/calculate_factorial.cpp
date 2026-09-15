@@ -3,16 +3,16 @@
 using namespace std;
 
 void runFactorialLogic(istream& input, ostream& output) {
-	output << "Hello, World!" << endl;
+    output << "Hello, World!" << endl;
 
-	int p = 1;
-	int i = 1;
+    int p = 1;
+    int i = 1;
 
-	// Calculate factorial of 10
-	while (i <= 10) {
-		p *= i;
-		i++; // uncomment this line to fix the infinite loop
-	}
+    // Calculate factorial of 10
+    while (i <= 10) {
+        p *= i;
+        i++; // uncomment this line to fix the infinite loop
+    }
 
-	output << "P: " << p << " i: " << i << endl;
+    output << "P: " << p << " i: " << i << endl;
 }

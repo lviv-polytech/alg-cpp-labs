@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{870f8f40-f644-4380-af89-1c4ea25ae31f}</ProjectGuid>
-    <RootNamespace>FirstSetupCpp</RootNamespace>
+    <ProjectGuid>{a2ebe1cc-528a-4250-99c4-69f9a5d33ba9}</ProjectGuid>
+    <RootNamespace>Lb2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,11 +139,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="calculate_factorial.cpp" />
-    <ClCompile Include="FirstSetupCpp.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="README.md" />
+    <ClCompile Include="Lb2.cpp" />
+    <ClCompile Include="Params.h" />
+    <ClCompile Include="SevenTeen.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

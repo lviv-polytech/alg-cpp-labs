@@ -1,5 +1,5 @@
-#include <sstream>
 #include <cassert>
+#include <sstream>
 #include <string>
 
 void runFactorialLogic(std::istream& input, std::ostream& output);

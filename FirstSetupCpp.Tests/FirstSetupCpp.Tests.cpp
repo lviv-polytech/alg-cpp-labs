@@ -5,7 +5,7 @@ using namespace std;
 void test_calculate_factorial_output_is_correct();
 
 int main() {
-    cout << "Running tests..." << endl;
+    cout << "Lb1 - Running tests..." << endl;
 
     test_calculate_factorial_output_is_correct();
 
