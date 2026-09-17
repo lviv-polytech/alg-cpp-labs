@@ -22,7 +22,7 @@
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{aca6cf07-685f-4433-8220-aaa460dad2e2}</ProjectGuid>
-    <RootNamespace>FirstSetupCppTests</RootNamespace>
+    <RootNamespace>Lb1Tests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,9 +139,9 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\FirstSetupCpp\calculate_factorial.cpp" />
+    <ClCompile Include="..\Lb1\calculate_factorial.cpp" />
     <ClCompile Include="factorial_and_print_test.cpp" />
-    <ClCompile Include="FirstSetupCpp.Tests.cpp" />
+    <ClCompile Include="Lb1.Tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

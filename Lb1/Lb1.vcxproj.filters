@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FirstSetupCpp.cpp">
+    <ClCompile Include="Lb1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="calculate_factorial.cpp">

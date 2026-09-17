@@ -1,17 +1,41 @@
-# config VS
+# IDE / editor
 .vs/
+.idea/
 *.user
 *.suo
+*.swp
+*.swo
 
-# Compile dirs
+# Build directories
 x64/
 x86/
 Debug/
 Release/
+out/
+build/
+/bin/
+cmake-build-*/
 
-# tmp
+# CMake generated files
+/CMakeFiles/
+/CMakeCache.txt
+/CMakeLists.txt.user
+/Makefile
+/cmake_install.cmake
+CTestTestfile.cmake
+
+# Binary and object artifacts
 *.obj
-*.pdb
-*.ilk
+*.o
+*.a
+*.so
+*.dll
+*.dylib
 *.exe
+*.ilk
+*.pdb
 *.log
+
+# Local temporary files
+*.tmp
+*.bak

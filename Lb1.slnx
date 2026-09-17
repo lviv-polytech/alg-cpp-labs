@@ -9,8 +9,8 @@
     <File Path=".pre-commit-config.yaml" />
     <File Path="Makefile" />
   </Folder>
-  <Project Path="FirstSetupCpp.Tests/FirstSetupCpp.Tests.vcxproj" Id="aca6cf07-685f-4433-8220-aaa460dad2e2" />
-  <Project Path="FirstSetupCpp/FirstSetupCpp.vcxproj" Id="870f8f40-f644-4380-af89-1c4ea25ae31f" />
+  <Project Path="Lb1.Tests/Lb1.Tests.vcxproj" Id="aca6cf07-685f-4433-8220-aaa460dad2e2" />
+  <Project Path="Lb1/Lb1.vcxproj" Id="870f8f40-f644-4380-af89-1c4ea25ae31f" />
   <Project Path="Lb2.Tests/Lb2.Tests.vcxproj" Id="8ccdb665-25a4-4b37-8f7f-e62f3d845b4b" />
   <Project Path="Lb2/Lb2.vcxproj" Id="a2ebe1cc-528a-4250-99c4-69f9a5d33ba9" />
 </Solution>
