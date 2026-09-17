@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
+enable_testing()
+
 add_executable(Lb1
         Lb1/Lb1.cpp
         Lb1/calculate_factorial.cpp
@@ -16,6 +18,8 @@ add_executable(Lb1_tests
         Lb1/calculate_factorial.cpp
 )
 
+add_test(NAME Lb1_Test COMMAND Lb1_tests)
+
 add_executable(Lb2
         Lb2/Lb2.cpp
         Lb2/SevenTeen.cpp
@@ -26,3 +30,5 @@ add_executable(Lb2_tests
         Lb2.Tests/lb2_tests.cpp
         Lb2/SevenTeen.cpp
 )
+
+add_test(NAME Lb2_Test COMMAND Lb2_tests)
