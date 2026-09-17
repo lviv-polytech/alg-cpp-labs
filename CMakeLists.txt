@@ -23,4 +23,6 @@ add_executable(Lb2
 
 add_executable(Lb2_tests
         Lb2.Tests/Lb2.Tests.cpp
+        Lb2.Tests/lb2_tests.cpp
+        Lb2/SevenTeen.cpp
 )

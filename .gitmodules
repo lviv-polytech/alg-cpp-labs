@@ -1,0 +1,3 @@
+[submodule "Lb3"]
+	path = Lb3
+	url = git@github.com:lviv-polytech/alg-java-labs.git

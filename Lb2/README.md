@@ -37,7 +37,6 @@ while (isLoop) {
         std::cout << "Don't write m < 0\n"; // Input invalid, prompt again
     }
 }
-
 ```
 
 The cycle continues as long as `m` is less than or equal to 0. A condition of 0 allows the user to terminate the program immediately. Entering a negative value triggers an error message, and the loop requests input again. This ensures that the code will never attempt to calculate `calc(pr)` with an invalid `m`.
@@ -67,5 +66,4 @@ Upon successful calculation, the program displays the results on the console, co
 ```cpp
 // Final part of main.cpp
 std::cout << "z1=" << pr.z1 << "\n" << "z2=" << pr.z2 << std::endl;
-
 ```

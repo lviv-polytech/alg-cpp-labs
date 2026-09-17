@@ -1,12 +1,11 @@
-#pragma once // that the compiler doesn't copy the structure (repeatedly)
+#pragma once
 
 #include <cmath>
 
-// Create structure
 struct Params {
-    double m;
-    double z1;
-    double z2;
+    double m = 0.0;
+    double z1 = 0.0;
+    double z2 = 0.0;
 };
 
 void calc(Params& params);

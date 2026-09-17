@@ -2,22 +2,25 @@
 
 #include <cmath>
 
-using namespace std;
+namespace {
+constexpr double EPSILON = 1e-12;
+constexpr double TWO = 2.0;
+constexpr double THREE = 3.0;
+constexpr double TWENTY_FOUR = 24.0;
+}  // namespace
 
+// For m > 0, the expression is equivalent to sign(3*m - 2) * sqrt(m).
+// At m = 2/3, the direct fraction becomes 0/0; normalize it to sqrt(m) to avoid NaN.
 void calc(Params& params) {
-
-    // Part 1
-    double BLOCK_1 = std::pow((3 * params.m + 2), 2);
-    double BLOCK_2 = 24 * params.m;
-
-    double MERGE_1_B1_B2 = std::sqrt(BLOCK_1 - BLOCK_2);
-
-    // Part 2
-    double BLOCK_3 = 3 * std::sqrt(params.m);
-    double BLOCK_4 = 2 / std::sqrt(params.m);
-
-    double MERGE_2_B1_B2 = BLOCK_3 - BLOCK_4;
-
-    params.z1 = MERGE_1_B1_B2 / MERGE_2_B1_B2;
     params.z2 = std::sqrt(params.m);
+
+    const double numerator = std::sqrt(std::pow(THREE * params.m + TWO, 2) - TWENTY_FOUR * params.m);
+    const double denominator = (THREE * std::sqrt(params.m)) - (TWO / std::sqrt(params.m));
+
+    if (std::abs(denominator) <= EPSILON) {
+        params.z1 = params.z2;
+        return;
+    }
+
+    params.z1 = numerator / denominator;
 }
