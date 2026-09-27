@@ -37,4 +37,5 @@ add_executable(Lb3
         Lb3/SevenTeenImpl.cpp
         Lb3/task1/ExpressionImpl.cpp
         Lb3/task2/ExpressionImpl.cpp
+        Lb3/task3/ExpressionImpl.cpp
 )

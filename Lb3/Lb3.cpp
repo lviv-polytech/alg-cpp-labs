@@ -32,6 +32,23 @@ namespace {
     }
 
     void runSecondTask() {
+        std::cout << "\n=== Second Task ===" << std::endl;
+        double a;
+        double b;
+        double c;
+        double x;
+        varsLoop({"a = ", "b = ", "c = ", "x = "}, {std::ref(a), std::ref(b), std::ref(c), std::ref(x)});
+        const double result = SevenTeen::taskSecond(a, b, c, x);
+        std::cout << "Result = " << std::fixed << std::setprecision(10) << result << std::endl;
+    }
+
+    void runThirdTask() {
+        std::cout << "\n=== Third Task (Variant 17) ===" << std::endl;
+        double x;
+        double R;
+        varsLoop({"x = ", "R = "}, {std::ref(x), std::ref(R)});
+        const double y = SevenTeen::taskThird(x, R);
+        std::cout << "y = " << std::fixed << std::setprecision(10) << y << std::endl;
     }
 } // namespace
 
@@ -40,10 +57,15 @@ int main() {
 
     tasks[1] = runFirstTask;
     tasks[2] = runSecondTask;
+    tasks[3] = runThirdTask;
 
     bool isLoop = true;
     int choice;
     while (isLoop) {
+        std::cout << "\nAvailable tasks:" << std::endl;
+        std::cout << "1. Function one variable" << std::endl;
+        std::cout << "2. Function with params" << std::endl;
+        std::cout << "3. Chart function" << std::endl;
         std::cout << "Write 0 for exit" << std::endl;
         std::cin >> choice;
 
