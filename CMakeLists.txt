@@ -31,3 +31,9 @@ add_executable(Lb2_tests
 )
 
 add_test(NAME Lb2_Test COMMAND Lb2_tests)
+
+add_executable(Lb3
+        Lb3/Lb3.cpp
+        Lb3/SevenTeenImpl.cpp
+        Lb3/task1/ExpressionImpl.cpp
+)
