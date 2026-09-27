@@ -5,6 +5,6 @@
 namespace SevenTeen {
 
     double taskFirst(const double x) {
-        return pow(x, 2) + 1 + Expression::calc(x);
+        return pow(x, 2) + 1 + Task1::Expression::calc(x);
     }
 } // namespace

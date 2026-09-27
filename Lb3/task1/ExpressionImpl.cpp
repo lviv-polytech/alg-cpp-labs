@@ -1,6 +1,3 @@
-#ifndef ALG_CPP_LABS_EXPRESSION_IMPL_H
-#define ALG_CPP_LABS_EXPRESSION_IMPL_H
-#include "Expression.h"
 #include <cmath>
 #include <iostream>
 #include <ostream>
@@ -16,7 +13,7 @@ namespace {
     }
 
     double third(const double x) {
-        return std::log10(1) * std::abs(2 * x + std::exp(4 * x + 1));
+        return std::log(std::abs(2 * x + std::exp(4 * x + 1)));
     }
 
     double calcShort(const double x) {
@@ -34,13 +31,13 @@ namespace {
     }
 }
 
-namespace Expression {
+namespace Task1::Expression {
 
     double calc(const double x) {
         const double rsShort = calcShort(x);
         const double rsLong = calcLong(x);
         std::cout << "\nResult short form: " << rsShort << std::endl;
-        std::cout << "\nResult long form: " << rsLong << std::endl;
+        std::cout << "Result long form: " << rsLong << std::endl;
 
         if (std::abs(rsShort - rsLong) > 1e-9) {
             std::cout << "\nResult isn't correct";
@@ -48,5 +45,3 @@ namespace Expression {
         return rsShort;
     }
 }
-
-#endif //ALG_CPP_LABS_EXPRESSION_IMPL_H
