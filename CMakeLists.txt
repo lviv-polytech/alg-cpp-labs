@@ -50,3 +50,14 @@ add_executable(Lb4_tests
         Lb4/Tasks.cpp
 )
 add_test(NAME Lb4_Test COMMAND Lb4_tests)
+
+add_executable(Lb5
+        Lb5/Lb5.cpp
+        Lb5/Tasks.cpp
+)
+
+add_executable(Lb5_tests
+        Lb5.Tests/Lb5.Tests.cpp
+        Lb5/Tasks.cpp
+)
+add_test(NAME Lb5_Test COMMAND Lb5_tests)
