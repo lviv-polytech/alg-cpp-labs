@@ -72,3 +72,14 @@ add_executable(Lb6_tests
         Lb6/Tasks.cpp
 )
 add_test(NAME Lb6_Test COMMAND Lb6_tests)
+
+add_executable(Lb7
+        Lb7/Lb7.cpp
+        Lb7/Tasks.cpp
+)
+
+add_executable(Lb7_tests
+        Lb7.Tests/Lb7.Tests.cpp
+        Lb7/Tasks.cpp
+)
+add_test(NAME Lb7_Test COMMAND Lb7_tests)
