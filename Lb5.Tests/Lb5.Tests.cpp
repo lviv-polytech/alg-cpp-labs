@@ -30,10 +30,16 @@ int main() {
     require(Lb5::taylorSum(2, 1e-4).terms == 10);
     const auto sums = Lb5::recursiveSums(3);
     for (double sum : sums) near(sum, 16.205130, 1e-5);
+    const auto oneTerm = Lb5::recursiveSums(1);
+    for (double sum : oneTerm) near(sum, 0.546302, 1e-6);
     const auto gp = Lb5::geometric(2, 3, 5);
     near(gp.term, 162);
     near(gp.sum, 242);
     require(gp.termDepth == 5 && gp.sumDepth == 5);
+    const auto unitRatio = Lb5::geometric(2, 1, 4);
+    near(unitRatio.sum, 8);
+    require(unitRatio.termDepth == 4 && unitRatio.sumDepth == 4);
     require(!Lb5::helper(std::acos(-1.0)));
+    require(!Lb5::nestedExpression(std::acos(-1.0) - Lb5::helper(1.0).value()));
     std::cout << "Lb5 tests passed.\n";
 }

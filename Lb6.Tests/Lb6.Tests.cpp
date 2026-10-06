@@ -27,6 +27,7 @@ int main() {
         require(Lb6::maxEvenIndex({1, 3, 5}, recursive) == -1);
         require(Lb6::maxEvenIndex({-4, -2, -10}, recursive) == 1);
         require(Lb6::maxEvenIndex({0}, recursive) == 0);
+        require(Lb6::maxEvenIndex({4, 6, 6}, recursive) == 1);
         std::vector<double> data{1.5, 0, -3.2, 2.0, 0.7, 0, 4.5, -1.0, 2.5};
         require(Lb6::Dynamic::countPositive(data, recursive) == 5);
         const int zero = Lb6::Dynamic::lastZeroIndex(data, recursive);
@@ -34,6 +35,17 @@ int main() {
         require(std::fabs(Lb6::Dynamic::sumAfter(data, zero, recursive) - 6.0) < 1e-12);
         Lb6::Dynamic::stablePartition(data, recursive);
         require((data == std::vector<double>{1.5, 0, -3.2, 0.7, 0, -1.0, 2.0, 4.5, 2.5}));
+        std::vector<double> noZeros{1, -2, 3};
+        require(Lb6::Dynamic::lastZeroIndex(noZeros, recursive) == -1);
+        std::vector<double> zeroAtEnd{2, 0};
+        require(Lb6::Dynamic::lastZeroIndex(zeroAtEnd, recursive) == 1);
+        require(Lb6::Dynamic::sumAfter(zeroAtEnd, 1, recursive) == 0);
+        std::vector<double> allLow{-2, 0.5, 1.9};
+        Lb6::Dynamic::stablePartition(allLow, recursive);
+        require((allLow == std::vector<double>{-2, 0.5, 1.9}));
+        std::vector<double> allHigh{2, 3, 4};
+        Lb6::Dynamic::stablePartition(allHigh, recursive);
+        require((allHigh == std::vector<double>{2, 3, 4}));
     }
     int integers[3]{};
     std::istringstream input("3 5 7");
@@ -44,5 +56,9 @@ int main() {
     std::istringstream decimals("1.5 2.25");
     Lb6::inputTemplate(decimals, prompts, values, 2);
     require(values[0] == 1.5 && values[1] == 2.25);
+    std::string words[2];
+    std::istringstream text("a bb");
+    Lb6::inputTemplateRecursive(text, prompts, words, 2);
+    require(words[0] == "a" && words[1] == "bb");
     std::cout << "Lb6 tests passed.\n";
 }

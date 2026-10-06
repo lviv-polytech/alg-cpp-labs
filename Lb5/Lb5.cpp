@@ -4,6 +4,14 @@
 #include <iomanip>
 #include <iostream>
 
+namespace {
+void printTwoColumnHeader(const char* valueLabel) {
+    std::cout << "+----------+----------------+\n"
+              << "| " << std::setw(8) << "x" << " | " << std::setw(14) << valueLabel << " |\n"
+              << "+----------+----------------+\n";
+}
+}
+
 int main() {
     std::cout << "Lab 5: 1 expression, 2 Taylor table, 3 helper table, 4 recursive sums, 5 geometric series\n";
     int task;
@@ -17,29 +25,36 @@ int main() {
         } else if (task == 2) {
             double start, end, step, epsilon;
             std::cin >> start >> end >> step >> epsilon;
+            std::cout << "+----------+----------------+----------------+------------+\n"
+                      << "| " << std::setw(8) << "x" << " | " << std::setw(14) << "ln(x)"
+                      << " | " << std::setw(14) << "Taylor sum" << " | " << std::setw(10) << "terms" << " |\n"
+                      << "+----------+----------------+----------------+------------+\n";
             for (const auto& [x, result] : Lb5::tabulateTaylor(start, end, step, epsilon)) {
-                std::cout << x << " | ";
+                std::cout << "| " << std::setw(8) << x << " | ";
                 if (x > 0.0) std::cout << std::log(x);
                 else std::cout << "undefined";
                 std::cout << " | ";
-                if (result) std::cout << result->sum << " | " << result->terms;
-                else std::cout << "outside convergence domain";
-                std::cout << '\n';
+                if (result)
+                    std::cout << std::setw(14) << result->sum << " | " << std::setw(10) << result->terms << " |\n";
+                else std::cout << std::setw(14) << "outside domain" << " | " << std::setw(10) << "-" << " |\n";
             }
+            std::cout << "+----------+----------------+----------------+------------+\n";
         } else if (task == 3) {
             double start, end;
             int n;
             std::cin >> start >> end >> n;
             if (n < 1 || start > end) throw std::invalid_argument("Require n >= 1 and start <= end.");
             const double step = (end - start) / n;
+            printTwoColumnHeader("E(g)");
             for (int j = 0; j <= n; ++j) {
                 const double g = start + j * step;
                 const auto value = Lb5::nestedExpression(g);
-                std::cout << g << " | ";
-                if (value) std::cout << *value;
-                else std::cout << "undefined";
-                std::cout << '\n';
+                std::cout << "| " << std::setw(8) << g << " | ";
+                if (value) std::cout << std::setw(14) << *value;
+                else std::cout << std::setw(14) << "undefined";
+                std::cout << " |\n";
             }
+            std::cout << "+----------+----------------+\n";
         } else if (task == 4) {
             int n;
             std::cin >> n;

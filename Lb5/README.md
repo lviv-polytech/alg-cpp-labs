@@ -13,6 +13,8 @@ ctest --test-dir build --output-on-failure -R Lb5
 
 Choose a task in the console and enter the values described in `.local/tasks/5.*`.
 
+The 5.3 task sheet's stated approximation `h(0.5) ≈ 1.2553` conflicts with its explicit six-term series and recurrence. This implementation follows the formula; those terms give `h(0.5) ≈ 1.2605918365`.
+
 ## Flowchart
 
 ```mermaid

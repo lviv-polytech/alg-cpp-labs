@@ -4,6 +4,24 @@
 #include <iomanip>
 #include <iostream>
 
+namespace {
+void printPairHeader(const char* valueLabel) {
+    std::cout << "+----------+----------------+\n"
+              << "| " << std::setw(8) << "x" << " | " << std::setw(14) << valueLabel << " |\n"
+              << "+----------+----------------+\n";
+}
+void printPairFooter() { std::cout << "+----------+----------------+\n"; }
+void printTaylorHeader() {
+    std::cout << "+----------+----------------+----------------+------------+\n"
+              << "| " << std::setw(8) << "x" << " | " << std::setw(14) << "ln(x)"
+              << " | " << std::setw(14) << "Taylor sum" << " | " << std::setw(10) << "terms" << " |\n"
+              << "+----------+----------------+----------------+------------+\n";
+}
+void printTaylorFooter() {
+    std::cout << "+----------+----------------+----------------+------------+\n";
+}
+}
+
 int main() {
     std::cout << "Lab 4 tasks (4.5 omitted: target region is unspecified).\n"
                  "1 cycles sum, 2 formula table, 3 parametric table, 4 graph table,\n"
@@ -24,28 +42,40 @@ int main() {
             std::cin >> start >> end >> step;
             if (task == 6) std::cin >> epsilon;
             if (task == 2) {
+                printPairHeader("y");
                 for (const auto& [x, y] : Lb4::tabulateFormula(start, end, step))
-                    std::cout << std::setw(8) << x << " | " << std::setw(14) << y << '\n';
+                    std::cout << "| " << std::setw(8) << x << " | " << std::setw(14) << y << " |\n";
+                printPairFooter();
             } else if (task == 4) {
+                printPairHeader("y");
                 for (const auto& [x, y] : Lb4::tabulateGraph(radius, start, end, step))
-                    std::cout << std::setw(8) << x << " | " << std::setw(14) << y << '\n';
+                    std::cout << "| " << std::setw(8) << x << " | " << std::setw(14) << y << " |\n";
+                printPairFooter();
             } else {
+                printTaylorHeader();
                 for (const auto& [x, result] : Lb4::tabulateTaylor(start, end, step, epsilon)) {
-                    std::cout << std::setw(8) << x << " | " << std::setw(14) << std::log(x) << " | ";
-                    if (result) std::cout << std::setw(14) << result->sum << " | " << result->terms;
-                    else std::cout << "outside convergence domain";
-                    std::cout << '\n';
+                    std::cout << "| " << std::setw(8) << x << " | ";
+                    if (x > 0.0) std::cout << std::setw(14) << std::log(x);
+                    else std::cout << std::setw(14) << "undefined";
+                    std::cout << " | ";
+                    if (result)
+                        std::cout << std::setw(14) << result->sum << " | " << std::setw(10)
+                                  << result->terms << " |\n";
+                    else std::cout << std::setw(14) << "outside domain" << " | " << std::setw(10) << "-" << " |\n";
                 }
+                printTaylorFooter();
             }
         } else if (task == 3) {
             double a, b, c, start, end, step;
             std::cin >> a >> b >> c >> start >> end >> step;
+            printPairHeader("F(x)");
             for (const auto& [x, y] : Lb4::tabulateParametric(a, b, c, start, end, step)) {
-                std::cout << std::setw(8) << x << " | ";
+                std::cout << "| " << std::setw(8) << x << " | ";
                 if (y) std::cout << std::setw(14) << *y;
-                else std::cout << "undefined";
-                std::cout << '\n';
+                else std::cout << std::setw(14) << "undefined";
+                std::cout << " |\n";
             }
+            printPairFooter();
         } else if (task == 5) {
             for (double value : Lb4::nestedSums()) std::cout << value << '\n';
         } else {

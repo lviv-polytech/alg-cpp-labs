@@ -15,6 +15,7 @@ struct SelectionResult {
     int sum;
 };
 bool isSelected(int index, int value);
+/** Counts elements satisfying (value divisible by 6) OR (zero-based index not divisible by 5). */
 int countSelected(const std::vector<int>& values, bool recursive);
 int sumSelected(const std::vector<int>& values, bool recursive);
 void zeroSelected(std::vector<int>& values, bool recursive);
@@ -23,11 +24,9 @@ int maxEvenIndex(const std::vector<int>& values, bool recursive);
 
 namespace Iterative {
 void input(std::istream& in, std::ostream& out, int* values, std::size_t size);
-void input(std::istream& in, std::ostream& out, std::string* values, std::size_t size);
 }
 namespace Recursive {
 void input(std::istream& in, std::ostream& out, int* values, std::size_t size);
-void input(std::istream& in, std::ostream& out, std::string* values, std::size_t size);
 }
 
 template <typename T>
@@ -51,6 +50,7 @@ namespace Dynamic {
 int countPositive(const std::vector<double>& values, bool recursive);
 int lastZeroIndex(const std::vector<double>& values, bool recursive);
 double sumAfter(const std::vector<double>& values, int index, bool recursive);
+/** Stable-partitions in place by x<2, equivalent to trunc(x)<=1. */
 void stablePartition(std::vector<double>& values, bool recursive);
 }
 

@@ -42,8 +42,8 @@ int main() {
             if (recursive) Lb6::inputTemplateRecursive(std::cin, std::cout, reals, size);
             else Lb6::inputTemplate(std::cin, std::cout, reals, size);
             std::cout << "Enter three strings:\n";
-            if (recursive) Lb6::Recursive::input(std::cin, std::cout, words, size);
-            else Lb6::Iterative::input(std::cin, std::cout, words, size);
+            if (recursive) Lb6::inputTemplateRecursive(std::cin, std::cout, words, size);
+            else Lb6::inputTemplate(std::cin, std::cout, words, size);
             std::cout << "int: ";
             for (int value : integers) std::cout << value << ' ';
             std::cout << "\ndouble: " << std::fixed << std::setprecision(2);

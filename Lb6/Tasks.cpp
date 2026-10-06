@@ -16,13 +16,6 @@ void inputIntRecursive(std::istream& in, std::ostream& out, int* values,
     if (!(in >> values[index])) throw std::runtime_error("Failed to read array element.");
     inputIntRecursive(in, out, values, size, index + 1);
 }
-void inputStringRecursive(std::istream& in, std::ostream& out, std::string* values,
-                          const std::size_t size, const std::size_t index) {
-    if (index >= size) return;
-    out << "a[" << index << "] = ";
-    if (!(in >> values[index])) throw std::runtime_error("Failed to read array element.");
-    inputStringRecursive(in, out, values, size, index + 1);
-}
 int evenIndexRecursive(const std::vector<int>& values, const std::size_t index, int best) {
     if (index == values.size()) return best;
     if (values[index] % 2 == 0 && (best == -1 || values[index] > values[best]))
@@ -120,16 +113,10 @@ namespace Iterative {
 void input(std::istream& in, std::ostream& out, int* values, const std::size_t size) {
     inputTemplate(in, out, values, size);
 }
-void input(std::istream& in, std::ostream& out, std::string* values, const std::size_t size) {
-    inputTemplate(in, out, values, size);
-}
 }
 namespace Recursive {
 void input(std::istream& in, std::ostream& out, int* values, const std::size_t size) {
     inputIntRecursive(in, out, values, size, 0);
-}
-void input(std::istream& in, std::ostream& out, std::string* values, const std::size_t size) {
-    inputStringRecursive(in, out, values, size, 0);
 }
 }
 
