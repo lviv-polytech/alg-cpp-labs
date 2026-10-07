@@ -7,20 +7,24 @@
 
 int main() {
     std::cout << "Lab 6: 1 selected array, 2 max even index, 3 input functions, 4 dynamic array\n";
+    std::cout << "-> Select task: ";
     int task, method;
     if (!(std::cin >> task)) return 1;
     try {
-        std::cout << "Method (0 iterative, 1 recursive): ";
+        std::cout << "-> Method (0 iterative, 1 recursive): ";
         if (!(std::cin >> method) || (method != 0 && method != 1)) return 1;
         const bool recursive = method == 1;
+        // Task 1: selected-array processing and output.
         if (task == 1) {
             auto values = Lb6::createArray(static_cast<unsigned>(std::time(nullptr)));
             Lb6::printArray(std::cout, values);
             const auto result = Lb6::processSelection(values, recursive);
             std::cout << "count = " << result.count << ", sum = " << result.sum << '\n';
             Lb6::printArray(std::cout, values);
+        // Task 2: largest even value index.
         } else if (task == 2) {
             std::size_t n;
+            std::cout << "-> n: ";
             std::cin >> n;
             std::mt19937 engine(static_cast<unsigned>(std::time(nullptr)));
             std::uniform_int_distribution<int> distribution(-50, 50);
@@ -30,6 +34,7 @@ int main() {
             const int index = Lb6::maxEvenIndex(values, recursive);
             if (index < 0) std::cout << "even elements not found\n";
             else std::cout << "largest even value index = " << index << '\n';
+        // Task 3: input arrays of ints, doubles, and strings.
         } else if (task == 3) {
             constexpr std::size_t size = 3;
             int integers[size]{};
@@ -51,8 +56,10 @@ int main() {
             std::cout << "\nstring: ";
             for (const auto& value : words) std::cout << value << ' ';
             std::cout << '\n';
+        // Task 4: dynamic-array statistics and partitioning.
         } else if (task == 4) {
             std::size_t n;
+            std::cout << "-> n: ";
             std::cin >> n;
             if (n == 0) throw std::invalid_argument("Array size must be positive.");
             std::mt19937 engine(static_cast<unsigned>(std::time(nullptr)));

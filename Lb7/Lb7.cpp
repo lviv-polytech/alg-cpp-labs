@@ -6,11 +6,14 @@
 
 int main() {
     std::cout << "Lab 7: 1 matrix filter and row sort, 2 paired row swap, 3 largest diagonal\n";
+    std::cout << "-> Select task: ";
     int task, method;
     if (!(std::cin >> task)) return 1;
     try {
+        // Task 1: filter matrix elements, zero selected cells, and sort rows.
         if (task == 1) {
             int recursive;
+            std::cout << "-> recursive flag (0/1): ";
             std::cin >> recursive;
             auto matrix = Lb7::createIntMatrix(8, 5, static_cast<unsigned>(std::time(nullptr)));
             std::cout << "Original matrix:\n";
@@ -24,8 +27,10 @@ int main() {
             Lb7::sortRows(matrix, recursive != 0);
             std::cout << "Rows sorted by columns 1, 2, 4:\n";
             Lb7::printMatrix(std::cout, matrix);
+        // Task 2: swap paired rows in the matrix.
         } else if (task == 2) {
             std::size_t rows, columns;
+            std::cout << "-> rows columns: ";
             std::cin >> rows >> columns;
             auto matrix = Lb7::createIntMatrix(rows, columns, static_cast<unsigned>(std::time(nullptr)));
             std::cout << "Original matrix:\n";
@@ -33,8 +38,10 @@ int main() {
             Lb7::processMatrixPairs(matrix);
             std::cout << "After paired swaps:\n";
             Lb7::printMatrix(std::cout, matrix);
+        // Task 3: find row without positive values and place max diagonal values.
         } else if (task == 3) {
             std::size_t size;
+            std::cout << "-> size method (0/1): ";
             std::cin >> size >> method;
             if (method != 0 && method != 1) throw std::invalid_argument("Method must be 0 or 1.");
             auto matrix = Lb7::createRealMatrix(size, static_cast<unsigned>(std::time(nullptr)));

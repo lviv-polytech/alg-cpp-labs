@@ -26,21 +26,32 @@ int main() {
     std::cout << "Lab 4 tasks (4.5 omitted: target region is unspecified).\n"
                  "1 cycles sum, 2 formula table, 3 parametric table, 4 graph table,\n"
                  "5 nested loops, 6 Taylor table\n";
+    std::cout << "-> Select task: ";
     int task;
     if (!(std::cin >> task)) return 1;
     std::cout << std::fixed << std::setprecision(6);
     try {
+        // Task 1: sums for four loop variants.
         if (task == 1) {
             int n;
+            std::cout << "-> n: ";
             std::cin >> n;
             const auto values = Lb4::cycleSums(n);
             for (std::size_t i = 0; i < values.size(); ++i)
                 std::cout << values[i] << (i + 1 == values.size() ? '\n' : ' ');
+        // Task 2/4/6: build tables for formula, graph, and Taylor series.
         } else if (task == 2 || task == 4 || task == 6) {
             double start, end, step, epsilon = 0.0, radius = 0.0;
-            if (task == 4) std::cin >> radius;
+            if (task == 4) {
+                std::cout << "-> radius: ";
+                std::cin >> radius;
+            }
+            std::cout << "-> start end step: ";
             std::cin >> start >> end >> step;
-            if (task == 6) std::cin >> epsilon;
+            if (task == 6) {
+                std::cout << "-> epsilon: ";
+                std::cin >> epsilon;
+            }
             if (task == 2) {
                 printPairHeader("y");
                 for (const auto& [x, y] : Lb4::tabulateFormula(start, end, step))
@@ -65,8 +76,10 @@ int main() {
                 }
                 printTaylorFooter();
             }
+        // Task 3: parametric function values over a range.
         } else if (task == 3) {
             double a, b, c, start, end, step;
+            std::cout << "-> a b c start end step: ";
             std::cin >> a >> b >> c >> start >> end >> step;
             printPairHeader("F(x)");
             for (const auto& [x, y] : Lb4::tabulateParametric(a, b, c, start, end, step)) {
@@ -76,7 +89,9 @@ int main() {
                 std::cout << " |\n";
             }
             printPairFooter();
+        // Task 5: nested loop sums.
         } else if (task == 5) {
+            std::cout << "-> no extra input required\n";
             for (double value : Lb4::nestedSums()) std::cout << value << '\n';
         } else {
             std::cerr << "Unknown task.\n";
