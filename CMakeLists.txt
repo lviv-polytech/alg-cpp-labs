@@ -38,4 +38,16 @@ add_executable(Lb3
         Lb3/task1/ExpressionImpl.cpp
         Lb3/task2/ExpressionImpl.cpp
         Lb3/task3/ExpressionImpl.cpp
+        Lb3/task4/ExpressionImpl.cpp
 )
+
+add_executable(Lb3_tests
+        Lb3.Tests/Lb3.Tests.cpp
+        Lb3/SevenTeenImpl.cpp
+        Lb3/task1/ExpressionImpl.cpp
+        Lb3/task2/ExpressionImpl.cpp
+        Lb3/task3/ExpressionImpl.cpp
+        Lb3/task4/ExpressionImpl.cpp
+)
+
+add_test(NAME Lb3_Test COMMAND Lb3_tests)
