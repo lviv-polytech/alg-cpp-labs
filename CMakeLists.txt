@@ -113,12 +113,26 @@ add_test(NAME Lb5_Test COMMAND Lb5_tests)
 add_executable(Lb6
         Lb6/Lb6.cpp
         Lb6/Tasks.cpp
+        Lb6/UI/ArrayPrinter.cpp
+        Lb6/Infrastructure/ArrayGenerator.cpp
+        Lb6/task1/ArraySelection.cpp
+        Lb6/task2/EvenIndexSearch.cpp
+        Lb6/task3/ArrayInput.cpp
+        Lb6/task4/DynamicArrayOperations.cpp
 )
+target_link_libraries(Lb6 PRIVATE Common)
 
 add_executable(Lb6_tests
         Lb6.Tests/Lb6.Tests.cpp
         Lb6/Tasks.cpp
+        Lb6/UI/ArrayPrinter.cpp
+        Lb6/Infrastructure/ArrayGenerator.cpp
+        Lb6/task1/ArraySelection.cpp
+        Lb6/task2/EvenIndexSearch.cpp
+        Lb6/task3/ArrayInput.cpp
+        Lb6/task4/DynamicArrayOperations.cpp
 )
+target_link_libraries(Lb6_tests PRIVATE Common)
 add_test(NAME Lb6_Test COMMAND Lb6_tests)
 
 add_executable(Lb7
