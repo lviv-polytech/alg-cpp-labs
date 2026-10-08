@@ -3,6 +3,7 @@
 #include "task1/Expression.h"
 #include "task2/Expression.h"
 #include "task3/Expression.h"
+#include "task4/Expression.h"
 
 namespace SevenTeen {
 
@@ -17,4 +18,8 @@ namespace SevenTeen {
     double taskThird(const double x, const double R) {
         return Task3::Expression::calc({x, R});
     }
-} // namespace
+
+    bool taskFourth(const double x, const double y, const double R) {
+        return Task4::Expression::isInside(x, y, R);
+    }
+} // namespace SevenTeen

@@ -18,11 +18,13 @@ namespace {
     }
 
     double calcShort(const Params &params) {
-        return params.x < 0 && params.b != 0
-                   ? first(params)
-                   : params.x > 0 && params.b == 0
-                         ? second(params)
-                         : third(params);
+        if (params.x < 0 && params.b != 0) {
+            return first(params);
+        }
+        if (params.x > 0 && params.b == 0) {
+            return second(params);
+        }
+        return third(params);
     }
 
     double calcLong(const Params &params) {

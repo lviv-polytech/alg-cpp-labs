@@ -9,8 +9,6 @@ constexpr double THREE = 3.0;
 constexpr double TWENTY_FOUR = 24.0;
 }  // namespace
 
-// For m > 0, the expression is equivalent to sign(3*m - 2) * sqrt(m).
-// At m = 2/3, the direct fraction becomes 0/0; normalize it to sqrt(m) to avoid NaN.
 void calc(Params& params) {
     params.z2 = std::sqrt(params.m);
 

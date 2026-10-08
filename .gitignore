@@ -39,7 +39,7 @@ CTestTestfile.cmake
 # Local temporary files
 *.tmp
 *.bak
-.local
+.local/
 
 # Visual Studio format
 *.vcxproj.filters

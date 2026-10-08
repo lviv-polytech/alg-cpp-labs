@@ -38,4 +38,61 @@ add_executable(Lb3
         Lb3/task1/ExpressionImpl.cpp
         Lb3/task2/ExpressionImpl.cpp
         Lb3/task3/ExpressionImpl.cpp
+        Lb3/task4/ExpressionImpl.cpp
 )
+
+add_executable(Lb3_tests
+        Lb3.Tests/Lb3.Tests.cpp
+        Lb3/SevenTeenImpl.cpp
+        Lb3/task1/ExpressionImpl.cpp
+        Lb3/task2/ExpressionImpl.cpp
+        Lb3/task3/ExpressionImpl.cpp
+        Lb3/task4/ExpressionImpl.cpp
+)
+
+add_test(NAME Lb3_Test COMMAND Lb3_tests)
+
+
+add_executable(Lb4
+        Lb4/Lb4.cpp
+        Lb4/Tasks.cpp
+)
+
+add_executable(Lb4_tests
+        Lb4.Tests/Lb4.Tests.cpp
+        Lb4/Tasks.cpp
+)
+add_test(NAME Lb4_Test COMMAND Lb4_tests)
+
+add_executable(Lb5
+        Lb5/Lb5.cpp
+        Lb5/Tasks.cpp
+)
+
+add_executable(Lb5_tests
+        Lb5.Tests/Lb5.Tests.cpp
+        Lb5/Tasks.cpp
+)
+add_test(NAME Lb5_Test COMMAND Lb5_tests)
+
+add_executable(Lb6
+        Lb6/Lb6.cpp
+        Lb6/Tasks.cpp
+)
+
+add_executable(Lb6_tests
+        Lb6.Tests/Lb6.Tests.cpp
+        Lb6/Tasks.cpp
+)
+add_test(NAME Lb6_Test COMMAND Lb6_tests)
+
+add_executable(Lb7
+        Lb7/Lb7.cpp
+        Lb7/Tasks.cpp
+)
+
+add_executable(Lb7_tests
+        Lb7.Tests/Lb7.Tests.cpp
+        Lb7/Tasks.cpp
+)
+add_test(NAME Lb7_Test COMMAND Lb7_tests)
