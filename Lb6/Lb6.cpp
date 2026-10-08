@@ -11,28 +11,34 @@
 namespace {
 
 void runSelectedArrayTask(const bool recursive) {
+    std::cout << "\n=== Task 1: Selected Array Processing ===\n";
     auto values = Lb6::createArray(static_cast<unsigned>(std::time(nullptr)));
+    std::cout << "Original array:\n";
     Lb6::printArray(std::cout, values);
     const auto result = Lb6::processSelection(values, recursive);
     std::cout << "count = " << result.count << ", sum = " << result.sum << '\n';
+    std::cout << "Modified array (selected elements replaced by 0):\n";
     Lb6::printArray(std::cout, values);
 }
 
 void runMaxEvenIndexTask(const bool recursive) {
+    std::cout << "\n=== Task 2: Largest Even Value Index ===\n";
     std::size_t n = 0;
-    std::cout << "-> n: ";
-    std::cin >> n;
+    std::cout << "-> array size n: ";
+    if (!Common::IO::read(std::cin, n)) return;
     std::mt19937 engine(static_cast<unsigned>(std::time(nullptr)));
     std::uniform_int_distribution<int> distribution(-50, 50);
     std::vector<int> values(n);
     for (int& value : values) value = distribution(engine);
+    std::cout << "Generated array:\n";
     Lb6::printArray(std::cout, values);
     const int index = Lb6::maxEvenIndex(values, recursive);
     if (index < 0) std::cout << "even elements not found\n";
-    else std::cout << "largest even value index = " << index << '\n';
+    else std::cout << "largest even value index = " << index << " (value = " << values[index] << ")\n";
 }
 
 void runInputFunctionsTask(const bool recursive) {
+    std::cout << "\n=== Task 3: Array Input Functions ===\n";
     constexpr std::size_t size = 3;
     int integers[size]{};
     double reals[size]{};
@@ -56,14 +62,16 @@ void runInputFunctionsTask(const bool recursive) {
 }
 
 void runDynamicArrayTask(const bool recursive) {
+    std::cout << "\n=== Task 4: Dynamic Array Operations ===\n";
     std::size_t n = 0;
-    std::cout << "-> n: ";
-    std::cin >> n;
+    std::cout << "-> array size n: ";
+    if (!Common::IO::read(std::cin, n)) return;
     if (n == 0) throw std::invalid_argument("Array size must be positive.");
     std::mt19937 engine(static_cast<unsigned>(std::time(nullptr)));
     std::uniform_int_distribution<int> distribution(-20, 20);
     std::vector<double> values(n);
     for (double& value : values) value = distribution(engine) / 2.0;
+    std::cout << "Original array:\n";
     Lb6::printArray(std::cout, values);
     std::cout << "positive count = " << Lb6::Dynamic::countPositive(values, recursive) << '\n';
     const int lastZero = Lb6::Dynamic::lastZeroIndex(values, recursive);
@@ -71,36 +79,62 @@ void runDynamicArrayTask(const bool recursive) {
     else std::cout << "sum after last zero = "
                    << Lb6::Dynamic::sumAfter(values, lastZero, recursive) << '\n';
     Lb6::Dynamic::stablePartition(values, recursive);
+    std::cout << "Array after stable partition (< 2 before >= 2):\n";
     Lb6::printArray(std::cout, values);
 }
 
 } // namespace
 
 int main() {
-    std::cout << "Lab 6: 1 selected array, 2 max even index, 3 input functions, 4 dynamic array\n";
-    std::cout << "-> Select task: ";
-    int task, method;
-    if (!Common::IO::read(std::cin, task)) return 1;
-    try {
-        std::cout << "-> Method (0 iterative, 1 recursive): ";
-        if (!Common::IO::read(std::cin, method) || (method != 0 && method != 1)) return 1;
-        const bool recursive = method == 1;
+    while (true) {
+        std::cout << "\nAvailable tasks:\n";
+        std::cout << "1. Selected array processing\n";
+        std::cout << "2. Largest even value index\n";
+        std::cout << "3. Array input functions\n";
+        std::cout << "4. Dynamic array operations\n";
+        std::cout << "Write 0 for exit\n";
+        std::cout << "Choice: ";
 
-        if (task == 1) {
-            runSelectedArrayTask(recursive);
-        } else if (task == 2) {
-            runMaxEvenIndexTask(recursive);
-        } else if (task == 3) {
-            runInputFunctionsTask(recursive);
-        } else if (task == 4) {
-            runDynamicArrayTask(recursive);
-        } else {
-            std::cerr << "Unknown task.\n";
-            return 1;
+        int task = 0;
+        if (!(std::cin >> task)) {
+            if (std::cin.eof()) break;
+            std::cin.clear();
+            std::string dummy;
+            std::cin >> dummy;
+            std::cout << "Invalid input. Please enter an integer.\n";
+            continue;
         }
-    } catch (const std::exception& error) {
-        std::cerr << "Error: " << error.what() << '\n';
-        return 1;
+
+        if (task == 0) {
+            return 0;
+        }
+
+        if (task < 1 || task > 4) {
+            std::cout << "Invalid choice (max: 4)\n";
+            continue;
+        }
+
+        int method = 0;
+        std::cout << "-> Method (0 for iterative, 1 for recursive): ";
+        if (!Common::IO::read(std::cin, method) || (method != 0 && method != 1)) {
+            std::cout << "Invalid method. Please enter 0 or 1.\n";
+            continue;
+        }
+        const bool recursive = (method == 1);
+
+        try {
+            if (task == 1) {
+                runSelectedArrayTask(recursive);
+            } else if (task == 2) {
+                runMaxEvenIndexTask(recursive);
+            } else if (task == 3) {
+                runInputFunctionsTask(recursive);
+            } else if (task == 4) {
+                runDynamicArrayTask(recursive);
+            }
+        } catch (const std::exception& error) {
+            std::cerr << "Error: " << error.what() << '\n';
+        }
     }
     return 0;
 }
