@@ -45,23 +45,53 @@ stateDiagram-v2
 
 ```mermaid
 classDiagram
-    class Tasks_h {
-      +countSelected(matrix, recursive)
-      +sortRows(matrix, recursive)
-      +processMatrixPairs(matrix)
-      +diagonalLargest(matrix, recursive)
-      +firstRowWithoutPositive(matrix, recursive)
+    class Presentation_UI {
+        +Lb7_main()
+        +MatrixPrinter
     }
-    class Tasks_cpp {
-      +matrix algorithms and validation
+    class ModuleFacade_Lb7 {
+        +countSelected()
+        +sortRows()
+        +processMatrixPairs()
+        +diagonalLargest()
+        +firstRowWithoutPositive()
     }
-    class Lb7_console {
-      +main()
+    class Core_MatrixTypes {
+        +validateRectangular()
+        +validateSquare()
     }
-    class Lb7_tests {
-      +main()
+    class Infrastructure {
+        +MatrixGenerator
     }
-    Lb7_console --> Tasks_h
-    Lb7_tests --> Tasks_h
-    Tasks_h --> Tasks_cpp
+    class Task1_MatrixFilterAndSort {
+        +selected()
+        +countSelected()
+        +sumSelected()
+        +zeroSelected()
+        +rowLess()
+        +sortRows()
+    }
+    class Task2_MatrixRowPairs {
+        +findMinInRow()
+        +findMaxInRow()
+        +swapElements()
+        +processMatrixPairs()
+    }
+    class Task3_MatrixDiagonal {
+        +diagonalLargest()
+        +firstRowWithoutPositive()
+    }
+    class Common_IO {
+        +read()
+    }
+
+    Presentation_UI --> ModuleFacade_Lb7
+    Presentation_UI --> Common_IO
+    Presentation_UI --> Infrastructure
+    ModuleFacade_Lb7 --> Task1_MatrixFilterAndSort
+    ModuleFacade_Lb7 --> Task2_MatrixRowPairs
+    ModuleFacade_Lb7 --> Task3_MatrixDiagonal
+    Task1_MatrixFilterAndSort --> Core_MatrixTypes
+    Task2_MatrixRowPairs --> Core_MatrixTypes
+    Task3_MatrixDiagonal --> Core_MatrixTypes
 ```

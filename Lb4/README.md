@@ -51,25 +51,60 @@ stateDiagram-v2
 
 ```mermaid
 classDiagram
-    class Tasks_h {
-      +cycleSums(n)
-      +tabulateFormula(start, end, step)
-      +tabulateParametric(a, b, c, start, end, step)
-      +tabulateGraph(radius, start, end, step)
-      +nestedSums()
-      +tabulateTaylor(start, end, step, epsilon)
+    class Presentation_UI {
+        +Lb4_main()
+        +TablePrinter
     }
-    class Tasks_cpp {
-      +piecewise and series implementations
+    class ModuleFacade_Lb4 {
+        +cycleSums()
+        +tabulateFormula()
+        +tabulateParametric()
+        +tabulateGraph()
+        +nestedSums()
+        +tabulateTaylor()
     }
-    class Lb4_console {
-      +main()
+    class Core_Tabulation {
+        +validateRange()
+        +tabulate()
     }
-    class Lb4_tests {
-      +main()
-      +test assignments
+    class Task1_CycleSums {
+        +term()
+        +cycleSums()
     }
-    Lb4_console --> Tasks_h
-    Lb4_tests --> Tasks_h
-    Tasks_h --> Tasks_cpp
+    class Task2_PiecewiseFormula {
+        +formula()
+        +tabulateFormula()
+    }
+    class Task3_ParametricTabulation {
+        +parametric()
+        +tabulateParametric()
+    }
+    class Task4_GraphTabulation {
+        +graphFunction()
+        +tabulateGraph()
+    }
+    class Task5_NestedSums {
+        +nestedSums()
+    }
+    class Task6_TaylorLog {
+        +taylorLog()
+        +tabulateTaylor()
+    }
+    class Common_IO {
+        +read()
+        +promptAndRead()
+    }
+
+    Presentation_UI --> ModuleFacade_Lb4
+    Presentation_UI --> Common_IO
+    ModuleFacade_Lb4 --> Task1_CycleSums
+    ModuleFacade_Lb4 --> Task2_PiecewiseFormula
+    ModuleFacade_Lb4 --> Task3_ParametricTabulation
+    ModuleFacade_Lb4 --> Task4_GraphTabulation
+    ModuleFacade_Lb4 --> Task5_NestedSums
+    ModuleFacade_Lb4 --> Task6_TaylorLog
+    Task2_PiecewiseFormula --> Core_Tabulation
+    Task3_ParametricTabulation --> Core_Tabulation
+    Task4_GraphTabulation --> Core_Tabulation
+    Task6_TaylorLog --> Core_Tabulation
 ```

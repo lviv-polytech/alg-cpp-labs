@@ -48,23 +48,51 @@ stateDiagram-v2
 
 ```mermaid
 classDiagram
-    class Tasks_h {
-      +processSelection(values, recursive)
-      +maxEvenIndex(values, recursive)
-      +inputTemplate(streams, values, size)
-      +Dynamic.countPositive(values, recursive)
-      +Dynamic.stablePartition(values, recursive)
+    class Presentation_UI {
+        +Lb6_main()
+        +ArrayPrinter
     }
-    class Tasks_cpp {
-      +iterative and recursive algorithms
+    class ModuleFacade_Lb6 {
+        +processSelection()
+        +maxEvenIndex()
+        +inputTemplate()
+        +Dynamic.countPositive()
+        +Dynamic.stablePartition()
     }
-    class Lb6_console {
-      +main()
+    class Infrastructure {
+        +ArrayGenerator
     }
-    class Lb6_tests {
-      +main()
+    class Task1_ArraySelection {
+        +isSelected()
+        +countSelected()
+        +sumSelected()
+        +zeroSelected()
+        +processSelection()
     }
-    Lb6_console --> Tasks_h
-    Lb6_tests --> Tasks_h
-    Tasks_h --> Tasks_cpp
+    class Task2_EvenIndexSearch {
+        +maxEvenIndex()
+    }
+    class Task3_ArrayInput {
+        +Iterative.input()
+        +Recursive.input()
+        +inputTemplate()
+        +inputTemplateRecursive()
+    }
+    class Task4_DynamicArrayOperations {
+        +countPositive()
+        +lastZeroIndex()
+        +sumAfter()
+        +stablePartition()
+    }
+    class Common_IO {
+        +read()
+    }
+
+    Presentation_UI --> ModuleFacade_Lb6
+    Presentation_UI --> Common_IO
+    Presentation_UI --> Infrastructure
+    ModuleFacade_Lb6 --> Task1_ArraySelection
+    ModuleFacade_Lb6 --> Task2_EvenIndexSearch
+    ModuleFacade_Lb6 --> Task3_ArrayInput
+    ModuleFacade_Lb6 --> Task4_DynamicArrayOperations
 ```

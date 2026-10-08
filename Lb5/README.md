@@ -50,23 +50,48 @@ stateDiagram-v2
 
 ```mermaid
 classDiagram
-    class Tasks_h {
-      +expression(a, b)
-      +taylorSum(x, epsilon)
-      +nestedExpression(g)
-      +recursiveSums(n)
-      +geometric(first, ratio, n)
+    class Presentation_UI {
+        +Lb5_main()
+        +TablePrinter
     }
-    class Tasks_cpp {
-      +helper and recursive implementations
+    class ModuleFacade_Lb5 {
+        +expression()
+        +taylorSum()
+        +tabulateTaylor()
+        +nestedExpression()
+        +recursiveSums()
+        +geometric()
     }
-    class Lb5_console {
-      +main()
+    class Task1_RationalExpression {
+        +h()
+        +expression()
     }
-    class Lb5_tests {
-      +main()
+    class Task2_TaylorSeries {
+        +nextTaylorTerm()
+        +taylorSum()
+        +tabulateTaylor()
     }
-    Lb5_console --> Tasks_h
-    Lb5_tests --> Tasks_h
-    Tasks_h --> Tasks_cpp
+    class Task3_PiecewiseExpression {
+        +helper()
+        +nestedExpression()
+    }
+    class Task4_RecursiveSeries {
+        +term()
+        +recursiveSums()
+    }
+    class Task5_GeometricProgression {
+        +geometric()
+    }
+    class Common_IO {
+        +read()
+        +promptAndRead()
+    }
+
+    Presentation_UI --> ModuleFacade_Lb5
+    Presentation_UI --> Common_IO
+    ModuleFacade_Lb5 --> Task1_RationalExpression
+    ModuleFacade_Lb5 --> Task2_TaylorSeries
+    ModuleFacade_Lb5 --> Task3_PiecewiseExpression
+    ModuleFacade_Lb5 --> Task4_RecursiveSeries
+    ModuleFacade_Lb5 --> Task5_GeometricProgression
 ```
