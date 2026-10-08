@@ -88,12 +88,26 @@ add_test(NAME Lb4_Test COMMAND Lb4_tests)
 add_executable(Lb5
         Lb5/Lb5.cpp
         Lb5/Tasks.cpp
+        Lb5/UI/TablePrinter.cpp
+        Lb5/task1/RationalExpression.cpp
+        Lb5/task2/TaylorSeries.cpp
+        Lb5/task3/PiecewiseExpression.cpp
+        Lb5/task4/RecursiveSeries.cpp
+        Lb5/task5/GeometricProgression.cpp
 )
+target_link_libraries(Lb5 PRIVATE Common)
 
 add_executable(Lb5_tests
         Lb5.Tests/Lb5.Tests.cpp
         Lb5/Tasks.cpp
+        Lb5/UI/TablePrinter.cpp
+        Lb5/task1/RationalExpression.cpp
+        Lb5/task2/TaylorSeries.cpp
+        Lb5/task3/PiecewiseExpression.cpp
+        Lb5/task4/RecursiveSeries.cpp
+        Lb5/task5/GeometricProgression.cpp
 )
+target_link_libraries(Lb5_tests PRIVATE Common)
 add_test(NAME Lb5_Test COMMAND Lb5_tests)
 
 add_executable(Lb6
