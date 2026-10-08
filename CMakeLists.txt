@@ -138,10 +138,22 @@ add_test(NAME Lb6_Test COMMAND Lb6_tests)
 add_executable(Lb7
         Lb7/Lb7.cpp
         Lb7/Tasks.cpp
+        Lb7/UI/MatrixPrinter.cpp
+        Lb7/Infrastructure/MatrixGenerator.cpp
+        Lb7/task1/MatrixFilterAndSort.cpp
+        Lb7/task2/MatrixRowPairs.cpp
+        Lb7/task3/MatrixDiagonal.cpp
 )
+target_link_libraries(Lb7 PRIVATE Common)
 
 add_executable(Lb7_tests
         Lb7.Tests/Lb7.Tests.cpp
         Lb7/Tasks.cpp
+        Lb7/UI/MatrixPrinter.cpp
+        Lb7/Infrastructure/MatrixGenerator.cpp
+        Lb7/task1/MatrixFilterAndSort.cpp
+        Lb7/task2/MatrixRowPairs.cpp
+        Lb7/task3/MatrixDiagonal.cpp
 )
+target_link_libraries(Lb7_tests PRIVATE Common)
 add_test(NAME Lb7_Test COMMAND Lb7_tests)
