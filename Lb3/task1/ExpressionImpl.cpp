@@ -17,7 +17,13 @@ namespace {
     }
 
     double calcShort(const double x) {
-        return x < 4 ? first(x) : 4 <= x && x < 7 ? second(x) : third(x);
+        if (x < 4) {
+            return first(x);
+        }
+        if (4 <= x && x < 7) {
+            return second(x);
+        }
+        return third(x);
     }
 
     double calcLong(const double x) {
