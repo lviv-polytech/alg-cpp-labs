@@ -1,5 +1,7 @@
 #include "MatrixFilterAndSort.h"
+#include "../../Common/RecursionTracker.h"
 
+#include <iostream>
 #include <stdexcept>
 #include <utility>
 
@@ -10,39 +12,44 @@ std::size_t cellCount(const Core::IntMatrix& matrix) {
     return matrix.size() * matrix.front().size();
 }
 
-int countSelectedAt(const Core::IntMatrix& matrix, const std::size_t index) {
+int countSelectedAt(const Core::IntMatrix& matrix, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "countSelectedAt", level, level + 1);
     if (index == cellCount(matrix)) return 0;
     const auto cols = matrix.front().size();
-    return (selected(matrix[index / cols][index % cols]) ? 1 : 0) + countSelectedAt(matrix, index + 1);
+    return (selected(matrix[index / cols][index % cols]) ? 1 : 0) + countSelectedAt(matrix, index + 1, level + 1);
 }
 
-int sumSelectedAt(const Core::IntMatrix& matrix, const std::size_t index) {
+int sumSelectedAt(const Core::IntMatrix& matrix, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "sumSelectedAt", level, level + 1);
     if (index == cellCount(matrix)) return 0;
     const auto cols = matrix.front().size();
     const int value = matrix[index / cols][index % cols];
-    return (selected(value) ? value : 0) + sumSelectedAt(matrix, index + 1);
+    return (selected(value) ? value : 0) + sumSelectedAt(matrix, index + 1, level + 1);
 }
 
-void zeroSelectedAt(Core::IntMatrix& matrix, const std::size_t index) {
+void zeroSelectedAt(Core::IntMatrix& matrix, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "zeroSelectedAt", level, level + 1);
     if (index == cellCount(matrix)) return;
     const auto cols = matrix.front().size();
     int& value = matrix[index / cols][index % cols];
     if (selected(value)) value = 0;
-    zeroSelectedAt(matrix, index + 1);
+    zeroSelectedAt(matrix, index + 1, level + 1);
 }
 
-void insertRow(Core::IntMatrix& matrix, const std::size_t index) {
+void insertRow(Core::IntMatrix& matrix, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "insertRow", level, level + 1);
     if (index == 0) return;
     if (rowLess(matrix[index], matrix[index - 1])) {
         std::swap(matrix[index], matrix[index - 1]);
-        insertRow(matrix, index - 1);
+        insertRow(matrix, index - 1, level + 1);
     }
 }
 
-void sortRowsAt(Core::IntMatrix& matrix, const std::size_t index) {
+void sortRowsAt(Core::IntMatrix& matrix, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "sortRowsAt", level, level + 1);
     if (index == matrix.size()) return;
-    insertRow(matrix, index);
-    sortRowsAt(matrix, index + 1);
+    insertRow(matrix, index, 0);
+    sortRowsAt(matrix, index + 1, level + 1);
 }
 
 } // namespace

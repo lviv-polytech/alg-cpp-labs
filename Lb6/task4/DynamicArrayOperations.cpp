@@ -1,30 +1,36 @@
 #include "DynamicArrayOperations.h"
+#include "../../Common/RecursionTracker.h"
 
 #include <cstddef>
+#include <iostream>
 #include <stdexcept>
 #include <utility>
 
 namespace Lb6::Task4 {
 namespace {
 
-int countPositiveRecursive(const std::vector<double>& values, const std::size_t index) {
+int countPositiveRecursive(const std::vector<double>& values, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "countPositiveRecursive", level, level + 1);
     return index == values.size() ? 0 : (values[index] > 0.0) +
-           countPositiveRecursive(values, index + 1);
+           countPositiveRecursive(values, index + 1, level + 1);
 }
 
-int lastZeroRecursive(const std::vector<double>& values, const std::size_t index, const int last) {
+int lastZeroRecursive(const std::vector<double>& values, const std::size_t index, const int last, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "lastZeroRecursive", level, level + 1);
     return index == values.size() ? last :
-           lastZeroRecursive(values, index + 1, values[index] == 0.0 ? static_cast<int>(index) : last);
+           lastZeroRecursive(values, index + 1, values[index] == 0.0 ? static_cast<int>(index) : last, level + 1);
 }
 
-double sumAfterRecursive(const std::vector<double>& values, const std::size_t index) {
-    return index == values.size() ? 0.0 : values[index] + sumAfterRecursive(values, index + 1);
+double sumAfterRecursive(const std::vector<double>& values, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "sumAfterRecursive", level, level + 1);
+    return index == values.size() ? 0.0 : values[index] + sumAfterRecursive(values, index + 1, level + 1);
 }
 
-void partitionRecursive(std::vector<double>& values, const std::size_t index) {
+void partitionRecursive(std::vector<double>& values, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "partitionRecursive", level, level + 1);
     if (index == values.size()) return;
     const double current = values[index];
-    partitionRecursive(values, index + 1);
+    partitionRecursive(values, index + 1, level + 1);
     if (current >= 2.0) {
         std::size_t lowCount = 0;
         while (index + 1 + lowCount < values.size() && values[index + 1 + lowCount] < 2.0)

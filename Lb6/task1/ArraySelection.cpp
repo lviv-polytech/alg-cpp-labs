@@ -1,26 +1,31 @@
 #include "ArraySelection.h"
+#include "../../Common/RecursionTracker.h"
 
+#include <iostream>
 #include <stdexcept>
 
 namespace Lb6::Task1 {
 namespace {
 
-int countSelectedRecursive(const std::vector<int>& values, const std::size_t index) {
+int countSelectedRecursive(const std::vector<int>& values, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "countSelectedRecursive", level, level + 1);
     return index == values.size() ? 0 :
         (isSelected(static_cast<int>(index), values[index]) ? 1 : 0) +
-            countSelectedRecursive(values, index + 1);
+            countSelectedRecursive(values, index + 1, level + 1);
 }
 
-int sumSelectedRecursive(const std::vector<int>& values, const std::size_t index) {
+int sumSelectedRecursive(const std::vector<int>& values, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "sumSelectedRecursive", level, level + 1);
     return index == values.size() ? 0 :
         (isSelected(static_cast<int>(index), values[index]) ? values[index] : 0) +
-            sumSelectedRecursive(values, index + 1);
+            sumSelectedRecursive(values, index + 1, level + 1);
 }
 
-void zeroSelectedRecursive(std::vector<int>& values, const std::size_t index) {
+void zeroSelectedRecursive(std::vector<int>& values, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "zeroSelectedRecursive", level, level + 1);
     if (index == values.size()) return;
     if (isSelected(static_cast<int>(index), values[index])) values[index] = 0;
-    zeroSelectedRecursive(values, index + 1);
+    zeroSelectedRecursive(values, index + 1, level + 1);
 }
 
 } // namespace

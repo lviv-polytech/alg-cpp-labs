@@ -2,6 +2,7 @@
 #include "Infrastructure/ArrayGenerator.h"
 #include "UI/ArrayPrinter.h"
 #include "../Common/IO.h"
+#include "../Common/RecursionTracker.h"
 
 #include <ctime>
 #include <iomanip>
@@ -15,6 +16,9 @@ void runSelectedArrayTask(const bool recursive) {
     auto values = Lb6::createArray(static_cast<unsigned>(std::time(nullptr)));
     std::cout << "Original array:\n";
     Lb6::printArray(std::cout, values);
+    if (recursive) {
+        Common::Recursion::printSummary(std::cout, "ArraySelection (recursive)", 26);
+    }
     const auto result = Lb6::processSelection(values, recursive);
     std::cout << "count = " << result.count << ", sum = " << result.sum << '\n';
     std::cout << "Modified array (selected elements replaced by 0):\n";
@@ -32,6 +36,9 @@ void runMaxEvenIndexTask(const bool recursive) {
     for (int& value : values) value = distribution(engine);
     std::cout << "Generated array:\n";
     Lb6::printArray(std::cout, values);
+    if (recursive) {
+        Common::Recursion::printSummary(std::cout, "maxEvenIndex (recursive)", static_cast<int>(n + 1));
+    }
     const int index = Lb6::maxEvenIndex(values, recursive);
     if (index < 0) std::cout << "even elements not found\n";
     else std::cout << "largest even value index = " << index << " (value = " << values[index] << ")\n";
@@ -43,6 +50,9 @@ void runInputFunctionsTask(const bool recursive) {
     int integers[size]{};
     double reals[size]{};
     std::string words[size];
+    if (recursive) {
+        Common::Recursion::printSummary(std::cout, "ArrayInput (recursive)", static_cast<int>(size + 1));
+    }
     std::cout << "Enter three integers:\n";
     if (recursive) Lb6::Recursive::input(std::cin, std::cout, integers, size);
     else Lb6::Iterative::input(std::cin, std::cout, integers, size);
@@ -73,6 +83,9 @@ void runDynamicArrayTask(const bool recursive) {
     for (double& value : values) value = distribution(engine) / 2.0;
     std::cout << "Original array:\n";
     Lb6::printArray(std::cout, values);
+    if (recursive) {
+        Common::Recursion::printSummary(std::cout, "DynamicArrayOperations (recursive)", static_cast<int>(n + 1));
+    }
     std::cout << "positive count = " << Lb6::Dynamic::countPositive(values, recursive) << '\n';
     const int lastZero = Lb6::Dynamic::lastZeroIndex(values, recursive);
     if (lastZero < 0) std::cout << "no zero elements; sum is undefined\n";

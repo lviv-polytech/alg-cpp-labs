@@ -1,5 +1,7 @@
 #include "MatrixDiagonal.h"
+#include "../../Common/RecursionTracker.h"
 
+#include <iostream>
 #include <utility>
 
 namespace Lb7::Task3 {
@@ -18,31 +20,35 @@ bool cellBefore(const Core::RealMatrix& matrix, const std::size_t index, const s
 }
 
 std::size_t findLargestCellAt(const Core::RealMatrix& matrix, const std::size_t diagonal,
-                              const std::size_t index, const std::size_t best) {
+                              const std::size_t index, const std::size_t best, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "findLargestCellAt", level, level + 1);
     if (index == matrix.size() * matrix.size()) return best;
     const std::size_t nextBest = cellBefore(matrix, index, best, diagonal) ? index : best;
-    return findLargestCellAt(matrix, diagonal, index + 1, nextBest);
+    return findLargestCellAt(matrix, diagonal, index + 1, nextBest, level + 1);
 }
 
-void diagonalAt(Core::RealMatrix& matrix, const std::size_t diagonal) {
+void diagonalAt(Core::RealMatrix& matrix, const std::size_t diagonal, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "diagonalAt", level, level + 1);
     if (diagonal == matrix.size()) return;
     const std::size_t target = diagonal * matrix.size() + diagonal;
-    const std::size_t largest = findLargestCellAt(matrix, diagonal, 0, target);
+    const std::size_t largest = findLargestCellAt(matrix, diagonal, 0, target, 0);
     std::swap(matrix[diagonal][diagonal],
               matrix[largest / matrix.size()][largest % matrix.size()]);
-    diagonalAt(matrix, diagonal + 1);
+    diagonalAt(matrix, diagonal + 1, level + 1);
 }
 
-bool rowHasPositiveAt(const Core::RealMatrix& matrix, const std::size_t row, const std::size_t col) {
+bool rowHasPositiveAt(const Core::RealMatrix& matrix, const std::size_t row, const std::size_t col, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "rowHasPositiveAt", level, level + 1);
     if (col == matrix.size()) return false;
     if (matrix[row][col] > 0.0) return true;
-    return rowHasPositiveAt(matrix, row, col + 1);
+    return rowHasPositiveAt(matrix, row, col + 1, level + 1);
 }
 
-int firstRowAt(const Core::RealMatrix& matrix, const std::size_t row) {
+int firstRowAt(const Core::RealMatrix& matrix, const std::size_t row, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "firstRowAt", level, level + 1);
     if (row == matrix.size()) return -1;
-    if (!rowHasPositiveAt(matrix, row, 0)) return static_cast<int>(row);
-    return firstRowAt(matrix, row + 1);
+    if (!rowHasPositiveAt(matrix, row, 0, 0)) return static_cast<int>(row);
+    return firstRowAt(matrix, row + 1, level + 1);
 }
 
 } // namespace

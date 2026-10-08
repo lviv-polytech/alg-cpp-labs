@@ -1,15 +1,18 @@
 #include "EvenIndexSearch.h"
+#include "../../Common/RecursionTracker.h"
 
 #include <cstddef>
+#include <iostream>
 
 namespace Lb6::Task2 {
 namespace {
 
-int evenIndexRecursive(const std::vector<int>& values, const std::size_t index, int best) {
+int evenIndexRecursive(const std::vector<int>& values, const std::size_t index, int best, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "evenIndexRecursive", level, level + 1);
     if (index == values.size()) return best;
     if (values[index] % 2 == 0 && (best == -1 || values[index] > values[best]))
         best = static_cast<int>(index);
-    return evenIndexRecursive(values, index + 1, best);
+    return evenIndexRecursive(values, index + 1, best, level + 1);
 }
 
 } // namespace

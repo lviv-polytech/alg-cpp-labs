@@ -1,14 +1,16 @@
 #include "ArrayInput.h"
+#include "../../Common/RecursionTracker.h"
 
 namespace Lb6::Task3 {
 namespace {
 
 void inputIntRecursive(std::istream& in, std::ostream& out, int* values,
-                       const std::size_t size, const std::size_t index) {
+                       const std::size_t size, const std::size_t index, const int level = 0) {
+    Common::Recursion::printStep(out, "inputIntRecursive", level, level + 1);
     if (index >= size) return;
     out << "a[" << index << "] = ";
     if (!(in >> values[index])) throw std::runtime_error("Failed to read array element.");
-    inputIntRecursive(in, out, values, size, index + 1);
+    inputIntRecursive(in, out, values, size, index + 1, level + 1);
 }
 
 } // namespace

@@ -1,6 +1,7 @@
 #include "Tasks.h"
 #include "UI/TablePrinter.h"
 #include "../Common/IO.h"
+#include "../Common/RecursionTracker.h"
 
 #include <cmath>
 #include <iomanip>
@@ -75,6 +76,7 @@ void runRecursiveSumsTask() {
     int n = 0;
     std::cout << "-> n: ";
     if (!Common::IO::read(std::cin, n)) return;
+    Common::Recursion::printSummary(std::cout, "recursiveSums", n + 1);
     const auto values = Lb5::recursiveSums(n);
     const char* labels[] = {"iter", "rec up ++", "rec up --", "rec down ++", "rec down --"};
     for (int i = 0; i < 5; ++i) {
@@ -94,8 +96,10 @@ void runGeometricTask() {
     if (!Common::IO::read(std::cin, n)) return;
 
     const auto result = Lb5::geometric(first, ratio, n);
-    std::cout << "b_n = " << result.term << "\nS_n = " << result.sum
-              << "\nterm depth = " << result.termDepth << "\nsum depth = " << result.sumDepth << '\n';
+    std::cout << "\n--- Calculation Results ---\n";
+    std::cout << "b_n = " << result.term << "\nS_n = " << result.sum << '\n';
+    Common::Recursion::printSummary(std::cout, "geometricTerm", result.termDepth);
+    Common::Recursion::printSummary(std::cout, "geometricSum", result.sumDepth);
 }
 
 } // namespace

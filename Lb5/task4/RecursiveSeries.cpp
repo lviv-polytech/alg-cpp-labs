@@ -1,6 +1,8 @@
 #include "RecursiveSeries.h"
+#include "../../Common/RecursionTracker.h"
 
 #include <cmath>
+#include <iostream>
 #include <stdexcept>
 
 namespace Lb5::Task4 {
@@ -10,20 +12,24 @@ double logTerm(const int i) {
     return std::sin(static_cast<double>(i)) / (1.0 + std::cos(static_cast<double>(i)));
 }
 
-double sumUp(const int upper, const int i) {
-    return i > upper ? 0.0 : logTerm(i) + sumUp(upper, i + 1);
+double sumUp(const int upper, const int i, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "sumUp", level, level + 1);
+    return i > upper ? 0.0 : logTerm(i) + sumUp(upper, i + 1, level + 1);
 }
 
-double sumDown(const int lower, const int i) {
-    return i < lower ? 0.0 : logTerm(i) + sumDown(lower, i - 1);
+double sumDown(const int lower, const int i, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "sumDown", level, level + 1);
+    return i < lower ? 0.0 : logTerm(i) + sumDown(lower, i - 1, level + 1);
 }
 
-double sumUpAccumulator(const int upper, const int i, const double acc) {
-    return i > upper ? acc : sumUpAccumulator(upper, i + 1, acc + logTerm(i));
+double sumUpAccumulator(const int upper, const int i, const double acc, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "sumUpAccumulator", level, level + 1);
+    return i > upper ? acc : sumUpAccumulator(upper, i + 1, acc + logTerm(i), level + 1);
 }
 
-double sumDownAccumulator(const int lower, const int i, const double acc) {
-    return i < lower ? acc : sumDownAccumulator(lower, i - 1, acc + logTerm(i));
+double sumDownAccumulator(const int lower, const int i, const double acc, const int level = 0) {
+    Common::Recursion::printStep(std::cout, "sumDownAccumulator", level, level + 1);
+    return i < lower ? acc : sumDownAccumulator(lower, i - 1, acc + logTerm(i), level + 1);
 }
 
 } // namespace

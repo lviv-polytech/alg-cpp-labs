@@ -2,6 +2,7 @@
 #include "Infrastructure/MatrixGenerator.h"
 #include "UI/MatrixPrinter.h"
 #include "../Common/IO.h"
+#include "../Common/RecursionTracker.h"
 
 #include <ctime>
 #include <iostream>
@@ -22,12 +23,18 @@ void runFilterAndSortTask() {
     auto matrix = Lb7::createIntMatrix(8, 5, static_cast<unsigned>(std::time(nullptr)));
     std::cout << "Original matrix (8x5):\n";
     Lb7::printMatrix(std::cout, matrix);
+    if (recursive) {
+        Common::Recursion::printSummary(std::cout, "Matrix Filter (count/sum/zero recursive)", 8 * 5 + 1);
+    }
     std::cout << "Selected count = " << Lb7::countSelected(matrix, recursive)
               << ", sum = " << Lb7::sumSelected(matrix, recursive) << '\n';
     auto filtered = matrix;
     Lb7::zeroSelected(filtered, recursive);
     std::cout << "Filtered matrix (values not divisible by 6 set to 0):\n";
     Lb7::printMatrix(std::cout, filtered);
+    if (recursive) {
+        Common::Recursion::printSummary(std::cout, "sortRows (recursive)", 8 + 1);
+    }
     Lb7::sortRows(matrix, recursive);
     std::cout << "Rows sorted by columns 1, 2, 4 (0-based: 0, 1, 3):\n";
     Lb7::printMatrix(std::cout, matrix);
@@ -66,11 +73,17 @@ void runDiagonalLargestTask() {
     const auto original = matrix;
     std::cout << "Original matrix:\n";
     Lb7::printMatrix(std::cout, original);
+    if (recursive) {
+        Common::Recursion::printSummary(std::cout, "firstRowWithoutPositive (recursive)", static_cast<int>(size + 1));
+    }
     const int row = Lb7::firstRowWithoutPositive(original, recursive);
     if (row < 0) {
         std::cout << "No row without positive elements.\n";
     } else {
         std::cout << "First row without positive elements (zero-based) = " << row << '\n';
+    }
+    if (recursive) {
+        Common::Recursion::printSummary(std::cout, "diagonalLargest (recursive)", static_cast<int>(size + 1));
     }
     Lb7::diagonalLargest(matrix, recursive);
     std::cout << "Matrix with largest values placed on main diagonal in descending order:\n";

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../Common/RecursionTracker.h"
+
 #include <cstddef>
 #include <istream>
 #include <ostream>
@@ -33,15 +35,16 @@ namespace Lb6::Task3 {
     }
 
     /// <summary>
-    /// Generic recursive template function for array input with formatted prompts.
+    /// Generic recursive template function for array input with formatted prompts and recursion tracing.
     /// </summary>
     template <typename T>
     void inputTemplateRecursive(std::istream& in, std::ostream& out, T* values,
-                                std::size_t size, std::size_t index = 0) {
+                                std::size_t size, std::size_t index = 0, int level = 0) {
+        Common::Recursion::printStep(out, "inputTemplateRecursive", level, level + 1);
         if (index >= size) return;
         out << "a[" << index << "] = ";
         if (!(in >> values[index])) throw std::runtime_error("Failed to read array element.");
-        inputTemplateRecursive(in, out, values, size, index + 1);
+        inputTemplateRecursive(in, out, values, size, index + 1, level + 1);
     }
 
 } // namespace Lb6::Task3
