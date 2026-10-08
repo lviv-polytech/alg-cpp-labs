@@ -7,6 +7,11 @@ file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 enable_testing()
 
+add_library(Common STATIC
+        Common/IO.cpp
+)
+target_include_directories(Common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(Lb1
         Lb1/Lb1.cpp
         Lb1/calculate_factorial.cpp
@@ -56,12 +61,28 @@ add_test(NAME Lb3_Test COMMAND Lb3_tests)
 add_executable(Lb4
         Lb4/Lb4.cpp
         Lb4/Tasks.cpp
+        Lb4/UI/TablePrinter.cpp
+        Lb4/task1/CycleSums.cpp
+        Lb4/task2/PiecewiseFormula.cpp
+        Lb4/task3/ParametricTabulation.cpp
+        Lb4/task4/GraphTabulation.cpp
+        Lb4/task5/NestedSums.cpp
+        Lb4/task6/TaylorLog.cpp
 )
+target_link_libraries(Lb4 PRIVATE Common)
 
 add_executable(Lb4_tests
         Lb4.Tests/Lb4.Tests.cpp
         Lb4/Tasks.cpp
+        Lb4/UI/TablePrinter.cpp
+        Lb4/task1/CycleSums.cpp
+        Lb4/task2/PiecewiseFormula.cpp
+        Lb4/task3/ParametricTabulation.cpp
+        Lb4/task4/GraphTabulation.cpp
+        Lb4/task5/NestedSums.cpp
+        Lb4/task6/TaylorLog.cpp
 )
+target_link_libraries(Lb4_tests PRIVATE Common)
 add_test(NAME Lb4_Test COMMAND Lb4_tests)
 
 add_executable(Lb5
