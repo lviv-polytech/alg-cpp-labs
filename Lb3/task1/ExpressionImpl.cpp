@@ -5,34 +5,43 @@
 namespace {
 
     double first(const double x) {
-        return 4 + pow(x, 7) - pow(x, 5) + pow(x, 3) - 2;
+        // B = 5x^3 - x^2 - 2
+        return 5.0 * std::pow(x, 3) - std::pow(x, 2) - 2.0;
     }
 
     double second(const double x) {
-        return std::atan((std::abs(x) + 1) / 2) + (8.3 * x);
+        // B = arctg((|x| + 1) / 2) + 8.3x
+        return std::atan((std::abs(x) + 1.0) / 2.0) + (8.3 * x);
     }
 
     double third(const double x) {
-        return std::log(std::abs(2 * x + std::exp(4 * x + 1)));
+        // B = ln|2x + e^(4+x)|
+        return std::log(std::abs(2.0 * x + std::exp(4.0 + x)));
     }
 
     double calcShort(const double x) {
+        double res = 0.0;
         if (x < 4) {
-            return first(x);
+            res = first(x);
         }
         if (4 <= x && x < 7) {
-            return second(x);
+            res = second(x);
         }
-        return third(x);
+        if (x >= 7) {
+            res = third(x);
+        }
+        return res;
     }
 
     double calcLong(const double x) {
         if (x < 4) {
             return first(x);
-        } else if (4 <= x && x < 7) {
-            return second(x);
         } else {
-            return third(x);
+            if (x < 7) {
+                return second(x);
+            } else {
+                return third(x);
+            }
         }
     }
 }

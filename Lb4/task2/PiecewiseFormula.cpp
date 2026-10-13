@@ -10,7 +10,7 @@ double formula(const double x) {
         const double x2 = x * x;
         const double x3 = x2 * x;
         const double x5 = x3 * x2;
-        const double x7 = x5 * x2;
+        const double x7 = x5 * x2; 
         return x2 + 1.0 + 4.0 * x7 - x5 + x3 - 2.0;
     }
     if (x < 7.0) {

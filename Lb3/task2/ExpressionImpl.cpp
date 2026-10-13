@@ -6,34 +6,43 @@ using Params = Task2::Expression::Params;
 
 namespace {
     double first(const Params &params) {
-        return -((2 * params.x - params.c) / (params.b * params.x - params.a));
+        // F = ax^2 - cx + b
+        return params.a * params.x * params.x - params.c * params.x + params.b;
     }
 
     double second(const Params &params) {
-        return (params.x - params.a) / (params.x - params.c);
+        // F = x^2 - cx
+        return params.x * params.x - params.c * params.x;
     }
 
     double third(const Params &params) {
-        return -(params.x / params.c) + (-params.c) / (2 * params.x + 1);
+        // F = -x / (a - c)
+        return -params.x / (params.a - params.c);
     }
 
     double calcShort(const Params &params) {
-        if (params.x < 0 && params.b != 0) {
-            return first(params);
+        double res = 0.0;
+        if (params.x + 10.0 < 0 && params.b != 0) {
+            res = first(params);
         }
-        if (params.x > 0 && params.b == 0) {
-            return second(params);
+        if (params.x + 10.0 > 0 && params.b == 0) {
+            res = second(params);
         }
-        return third(params);
+        if (!(params.x + 10.0 < 0 && params.b != 0) && !(params.x + 10.0 > 0 && params.b == 0)) {
+            res = third(params);
+        }
+        return res;
     }
 
     double calcLong(const Params &params) {
-        if (params.x < 0 && params.b != 0) {
+        if (params.x + 10.0 < 0 && params.b != 0) {
             return first(params);
-        } else if (params.x > 0 && params.b == 0) {
-            return second(params);
         } else {
-            return third(params);
+            if (params.x + 10.0 > 0 && params.b == 0) {
+                return second(params);
+            } else {
+                return third(params);
+            }
         }
     }
 } // namespace
