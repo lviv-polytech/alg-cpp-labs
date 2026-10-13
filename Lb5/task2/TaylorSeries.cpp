@@ -8,9 +8,12 @@ namespace Lb5::Task2 {
 
 constexpr int MAX_TAYLOR_TERMS = 1'000'000;
 
+// Рекурентне співвідношення для ряду Тейлора ln(x):
+// a_{n+1} = a_n * R(n, x), де R(n, x) = ((x - 1) / x) * (n / (n + 1))
 double nextTaylorTerm(const double x, const int n, const double previous) {
     if (n < 1 || x == 0.0) throw std::invalid_argument("Taylor recurrence requires n >= 1 and x != 0.");
     const double q = (x - 1.0) / x;
+    // Обчислення наступного члена ряду через попередній за рекурентним співвідношенням
     return previous * q * static_cast<double>(n) / static_cast<double>(n + 1);
 }
 
@@ -26,6 +29,7 @@ TaylorResult taylorSum(const double x, const double epsilon) {
         ++terms;
         if (std::fabs(addend) < epsilon) break;
         if (terms == MAX_TAYLOR_TERMS) throw std::runtime_error("Taylor series iteration limit reached.");
+        // Використання рекурентного співвідношення для знаходження наступного члена ряду
         addend = nextTaylorTerm(x, terms, addend);
     } while (true);
     return {sum, terms};

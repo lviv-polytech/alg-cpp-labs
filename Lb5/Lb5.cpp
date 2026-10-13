@@ -34,8 +34,8 @@ void runTaylorTableTask() {
     Lb5::UI::printTaylorHeader(std::cout);
     for (const auto& [x, result] : Lb5::tabulateTaylor(start, end, step, epsilon)) {
         std::cout << "| " << std::setw(8) << x << " | ";
-        if (x > 0.0) std::cout << std::log(x);
-        else std::cout << "undefined";
+        if (x > 0.0) std::cout << std::setw(14) << std::log(x);
+        else std::cout << std::setw(14) << "undefined";
         std::cout << " | ";
         if (result) {
             std::cout << std::setw(14) << result->sum << " | " << std::setw(10) << result->terms << " |\n";
