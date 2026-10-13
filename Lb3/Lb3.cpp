@@ -42,9 +42,13 @@ namespace {
         double b;
         double c;
         double x;
-        varsLoop({"a = ", "b = ", "c = ", "x = "}, {std::ref(a), std::ref(b), std::ref(c), std::ref(x)});
-        const double result = SevenTeen::taskSecond(a, b, c, x);
-        std::cout << "Result = " << std::fixed << std::setprecision(10) << result << std::endl;
+        varsLoop({"Enter a: ", "Enter b: ", "Enter c: ", "Enter x: "}, {std::ref(a), std::ref(b), std::ref(c), std::ref(x)});
+        try {
+            const double result = SevenTeen::taskSecond(a, b, c, x);
+            std::cout << "Final Result F = " << std::fixed << std::setprecision(4) << result << std::endl;
+        } catch (const std::exception &ex) {
+            std::cout << "Execution stopped: " << ex.what() << std::endl;
+        }
     }
 
     void runThirdTask() {

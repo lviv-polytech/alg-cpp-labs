@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "../Lb3/SevenTeen.h"
+#include "../Lb3/task2/Expression.h"
 #include "../Lb3/task4/Expression.h"
 
 namespace {
@@ -171,6 +172,109 @@ void testSevenTeenFacade() {
     std::cout << "[PASS] SevenTeen facade integration\n";
 }
 
+// ==================== TASK 2 UNIT TESTS ====================
+
+void testTask2AllCases() {
+    // Test 1: Branch A (x + 10 < 0 and b != 0)
+    // a = 2.0, b = 3.0, c = 1.0, x = -15.0 => F = 468.0
+    {
+        Task2::Expression::Params params(2.0, 3.0, 1.0, -15.0);
+        const double f1 = Task2::Expression::calcShort(params);
+        const double f2 = Task2::Expression::calcLong(params);
+        assert(approxEqual(f1, 468.0));
+        assert(approxEqual(f2, 468.0));
+        assert(approxEqual(SevenTeen::taskSecond(2.0, 3.0, 1.0, -15.0), 468.0));
+    }
+
+    // Test 2: Branch B (x + 10 > 0 and b == 0)
+    // a = 2.0, b = 0.0, c = 1.0, x = 5.0 => F = 0.75
+    {
+        Task2::Expression::Params params(2.0, 0.0, 1.0, 5.0);
+        const double f1 = Task2::Expression::calcShort(params);
+        const double f2 = Task2::Expression::calcLong(params);
+        assert(approxEqual(f1, 0.75));
+        assert(approxEqual(f2, 0.75));
+        assert(approxEqual(SevenTeen::taskSecond(2.0, 0.0, 1.0, 5.0), 0.75));
+    }
+
+    // Test 3: Branch C (x + 10 == 0, i.e., x = -10)
+    // a = 2.0, b = 3.0, c = 1.0, x = -10.0 => F = 10.0
+    {
+        Task2::Expression::Params params(2.0, 3.0, 1.0, -10.0);
+        const double f1 = Task2::Expression::calcShort(params);
+        const double f2 = Task2::Expression::calcLong(params);
+        assert(approxEqual(f1, 10.0));
+        assert(approxEqual(f2, 10.0));
+        assert(approxEqual(SevenTeen::taskSecond(2.0, 3.0, 1.0, -10.0), 10.0));
+    }
+
+    // Test 4: Branch C (x + 10 < 0 and b == 0)
+    // a = 2.0, b = 0.0, c = 1.0, x = -15.0 => F = 15.0
+    {
+        Task2::Expression::Params params(2.0, 0.0, 1.0, -15.0);
+        const double f1 = Task2::Expression::calcShort(params);
+        const double f2 = Task2::Expression::calcLong(params);
+        assert(approxEqual(f1, 15.0));
+        assert(approxEqual(f2, 15.0));
+        assert(approxEqual(SevenTeen::taskSecond(2.0, 0.0, 1.0, -15.0), 15.0));
+    }
+
+    // Test 5: Branch C (x + 10 > 0 and b != 0)
+    // a = 2.0, b = 3.0, c = 1.0, x = 5.0 => F = -5.0
+    {
+        Task2::Expression::Params params(2.0, 3.0, 1.0, 5.0);
+        const double f1 = Task2::Expression::calcShort(params);
+        const double f2 = Task2::Expression::calcLong(params);
+        assert(approxEqual(f1, -5.0));
+        assert(approxEqual(f2, -5.0));
+        assert(approxEqual(SevenTeen::taskSecond(2.0, 3.0, 1.0, 5.0), -5.0));
+    }
+
+    // Test 6: Division by zero in Branch B (x == c)
+    // a = 2.0, b = 0.0, c = 3.0, x = 3.0
+    {
+        Task2::Expression::Params params(2.0, 0.0, 3.0, 3.0);
+        bool shortThrew = false;
+        try {
+            Task2::Expression::calcShort(params);
+        } catch (const std::runtime_error &) {
+            shortThrew = true;
+        }
+        assert(shortThrew);
+
+        bool longThrew = false;
+        try {
+            Task2::Expression::calcLong(params);
+        } catch (const std::runtime_error &) {
+            longThrew = true;
+        }
+        assert(longThrew);
+    }
+
+    // Test 7: Division by zero in Branch C (a == c)
+    // a = 3.0, b = 3.0, c = 3.0, x = -10.0
+    {
+        Task2::Expression::Params params(3.0, 3.0, 3.0, -10.0);
+        bool shortThrew = false;
+        try {
+            Task2::Expression::calcShort(params);
+        } catch (const std::runtime_error &) {
+            shortThrew = true;
+        }
+        assert(shortThrew);
+
+        bool longThrew = false;
+        try {
+            Task2::Expression::calcLong(params);
+        } catch (const std::runtime_error &) {
+            longThrew = true;
+        }
+        assert(longThrew);
+    }
+
+    std::cout << "[PASS] Task 2 - All test scenarios and edge cases\n";
+}
+
 } // namespace
 
 int main() {
@@ -179,6 +283,7 @@ int main() {
     testTask4OutsideHappyPaths();
     testTask4BoundaryPoints();
     testTask4EdgeCasesAndValidation();
+    testTask2AllCases();
     testSevenTeenFacade();
     std::cout << "All Lb3 tests successfully passed!\n";
     return 0;

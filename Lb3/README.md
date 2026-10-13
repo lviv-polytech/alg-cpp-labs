@@ -15,7 +15,15 @@ Where $f(x)$ branches based on intervals of $x$:
 - $x \ge 7$: Exponential and logarithmic expression
 
 ### Task 2: Parametric Function Evaluation
-Calculates expression values depending on conditions between parameters $a, b, c$ and variable $x$. Implemented using both compact conditional operators and detailed `if-else` branching logic.
+Evaluates piecewise function $F(a, b, c, x)$ using two distinct branching methods:
+- **Branch A**: $F = a x^2 - c x + b$, if $(x + 10 < 0) \land (b \neq 0)$
+- **Branch B**: $F = \frac{x - a}{x - c}$, if $(x + 10 > 0) \land (b = 0)$ (requires $x \neq c$)
+- **Branch C**: $F = \frac{-x}{a - c}$, in all other cases (requires $a \neq c$)
+
+Implemented via:
+1. **Method 1 (Short Form)**: Uses only single `if` statements without `else`. Sets Branch C as default, and conditionally overrides with Branch A or B.
+2. **Method 2 (Full Form)**: Uses nested `if-else` branching with independent division-by-zero checks.
+
 
 ### Task 3: Piecewise Chart Function
 Calculates coordinates along a composite curve defined by straight segments and circular arcs based on radius $R$ and argument $x$.
