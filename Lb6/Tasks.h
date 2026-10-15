@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include "task1/ArraySelection.h"
+
 namespace Lb6 {
 
 constexpr std::size_t SELECTION_SIZE = 25;

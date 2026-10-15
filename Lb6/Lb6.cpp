@@ -12,17 +12,36 @@
 namespace {
 
 void runSelectedArrayTask(const bool recursive) {
-    std::cout << "\n=== Task 1: Selected Array Processing ===\n";
-    auto values = Lb6::createArray(static_cast<unsigned>(std::time(nullptr)));
-    std::cout << "Original array:\n";
-    Lb6::printArray(std::cout, values);
+    std::cout << "\n=== Task 1: Selected Array Processing (Variant 17) ===\n";
+    std::vector<int> values(Lb6::Task1::SELECTION_SIZE);
     if (recursive) {
+        std::cout << "[Recursive approach]\n";
         Common::Recursion::printSummary(std::cout, "ArraySelection (recursive)", 26);
+        Lb6::Task1::generateArrayRec(values, Lb6::Task1::DEFAULT_LOW, Lb6::Task1::DEFAULT_HIGH, 0);
+        std::cout << "Original array:\n";
+        Lb6::Task1::printArrayRec(std::cout, values, 0);
+
+        const int count = Lb6::Task1::countElementsRec(values, 0);
+        const int sum = Lb6::Task1::sumElementsRec(values, 0);
+        Lb6::Task1::zeroElementsRec(values, 0);
+
+        std::cout << "Count = " << count << ", Sum = " << sum << '\n';
+        std::cout << "Modified array (selected elements replaced by 0):\n";
+        Lb6::Task1::printArrayRec(std::cout, values, 0);
+    } else {
+        std::cout << "[Iterative approach]\n";
+        Lb6::Task1::generateArray(values, Lb6::Task1::DEFAULT_LOW, Lb6::Task1::DEFAULT_HIGH);
+        std::cout << "Original array:\n";
+        Lb6::Task1::printArray(std::cout, values);
+
+        const int count = Lb6::Task1::countElements(values);
+        const int sum = Lb6::Task1::sumElements(values);
+        Lb6::Task1::zeroElements(values);
+
+        std::cout << "Count = " << count << ", Sum = " << sum << '\n';
+        std::cout << "Modified array (selected elements replaced by 0):\n";
+        Lb6::Task1::printArray(std::cout, values);
     }
-    const auto result = Lb6::processSelection(values, recursive);
-    std::cout << "count = " << result.count << ", sum = " << result.sum << '\n';
-    std::cout << "Modified array (selected elements replaced by 0):\n";
-    Lb6::printArray(std::cout, values);
 }
 
 void runMaxEvenIndexTask(const bool recursive) {

@@ -15,14 +15,71 @@ void require(bool condition) {
 }
 
 int main() {
-    const std::vector<int> expected{
-        7,12,25,31,44, 9,18,50,61,5, 30,73,4,66,27, 35,48,13,59,70, 8,42,16,37,55};
+    // ------------------------------------------------------------------------
+    // Task 6.1 (Variant 17) Reference Test Vector
+    // ------------------------------------------------------------------------
+    const std::vector<int> r_test{
+        12, 10, 15, 20, 30, // Group 1: i=0..4, r[0]=12 is divisible by 6
+        25, 10, 15, 20, 30, // Group 2: i=5..9, r[5]=25 is NOT divisible by 6 (preserved)
+        42, 10, 15, 20, 30, // Group 3: i=10..14, r[10]=42 is divisible by 6
+        19, 10, 15, 20, 30, // Group 4: i=15..19, r[15]=19 is NOT divisible by 6 (preserved)
+        73, 10, 15, 20, 30  // Group 5: i=20..24, r[20]=73 is NOT divisible by 6 (preserved)
+    };
+
+    // Test 1: Iterative Functions
+    {
+        require(Lb6::Task1::countElements(r_test) == 22);
+        require(Lb6::Task1::sumElements(r_test) == 429);
+
+        auto r_mod = r_test;
+        Lb6::Task1::zeroElements(r_mod);
+        require(r_mod[5] == 25);
+        require(r_mod[15] == 19);
+        require(r_mod[20] == 73);
+        for (std::size_t i = 0; i < r_mod.size(); ++i) {
+            if (i != 5 && i != 15 && i != 20) {
+                require(r_mod[i] == 0);
+            }
+        }
+    }
+
+    // Test 2: Recursive Functions
+    {
+        require(Lb6::Task1::countElementsRec(r_test, 0) == 22);
+        require(Lb6::Task1::sumElementsRec(r_test, 0) == 429);
+
+        auto r_mod = r_test;
+        Lb6::Task1::zeroElementsRec(r_mod, 0);
+        require(r_mod[5] == 25);
+        require(r_mod[15] == 19);
+        require(r_mod[20] == 73);
+        for (std::size_t i = 0; i < r_mod.size(); ++i) {
+            if (i != 5 && i != 15 && i != 20) {
+                require(r_mod[i] == 0);
+            }
+        }
+    }
+
+    // Test 3: Orchestration / processSelection
     for (bool recursive : {false, true}) {
-        auto selected = expected;
-        const auto result = Lb6::processSelection(selected, recursive);
-        require(result.count == 21 && result.sum == 786);
-        require(selected[0] == 7 && selected[5] == 9 && selected[15] == 35 && selected[20] == 8);
-        require(selected[1] == 0 && selected[10] == 0);
+        auto r_mod = r_test;
+        const auto result = Lb6::processSelection(r_mod, recursive);
+        require(result.count == 22 && result.sum == 429);
+        require(r_mod[5] == 25 && r_mod[15] == 19 && r_mod[20] == 73);
+    }
+
+    // Test 4: Exception on invalid size
+    {
+        bool caught = false;
+        try {
+            Lb6::Task1::countElements({1, 2, 3});
+        } catch (const std::invalid_argument&) {
+            caught = true;
+        }
+        require(caught);
+    }
+
+    for (bool recursive : {false, true}) {
         require(Lb6::maxEvenIndex({3, -8, 14, 7, 14, 2, 9}, recursive) == 2);
         require(Lb6::maxEvenIndex({1, 3, 5}, recursive) == -1);
         require(Lb6::maxEvenIndex({-4, -2, -10}, recursive) == 1);
