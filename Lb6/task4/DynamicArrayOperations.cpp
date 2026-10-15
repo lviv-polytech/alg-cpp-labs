@@ -1,83 +1,182 @@
 #include "DynamicArrayOperations.h"
-#include "../../Common/RecursionTracker.h"
 
-#include <cstddef>
-#include <iostream>
+#include <random>
 #include <stdexcept>
-#include <utility>
 
 namespace Lb6::Task4 {
-namespace {
 
-int countPositiveRecursive(const std::vector<double>& values, const std::size_t index, const int level = 0) {
-    Common::Recursion::printStep(std::cout, "countPositiveRecursive", level, level + 1);
-    return index == values.size() ? 0 : (values[index] > 0.0) +
-           countPositiveRecursive(values, index + 1, level + 1);
-}
+// ============================================================================
+// Iterative Implementations (Method 1)
+// ============================================================================
 
-int lastZeroRecursive(const std::vector<double>& values, const std::size_t index, const int last, const int level = 0) {
-    Common::Recursion::printStep(std::cout, "lastZeroRecursive", level, level + 1);
-    return index == values.size() ? last :
-           lastZeroRecursive(values, index + 1, values[index] == 0.0 ? static_cast<int>(index) : last, level + 1);
-}
-
-double sumAfterRecursive(const std::vector<double>& values, const std::size_t index, const int level = 0) {
-    Common::Recursion::printStep(std::cout, "sumAfterRecursive", level, level + 1);
-    return index == values.size() ? 0.0 : values[index] + sumAfterRecursive(values, index + 1, level + 1);
-}
-
-void partitionRecursive(std::vector<double>& values, const std::size_t index, const int level = 0) {
-    Common::Recursion::printStep(std::cout, "partitionRecursive", level, level + 1);
-    if (index == values.size()) return;
-    const double current = values[index];
-    partitionRecursive(values, index + 1, level + 1);
-    if (current >= 2.0) {
-        std::size_t lowCount = 0;
-        while (index + 1 + lowCount < values.size() && values[index + 1 + lowCount] < 2.0)
-            ++lowCount;
-        for (std::size_t j = 0; j < lowCount; ++j)
-            values[index + j] = values[index + 1 + j];
-        values[index + lowCount] = current;
+void initArrayIterative(std::vector<double>& a, double minVal, double maxVal) {
+    if (minVal > maxVal) throw std::invalid_argument("minVal cannot exceed maxVal.");
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(minVal, maxVal);
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        a[i] = dist(gen);
     }
 }
 
-} // namespace
+void printArrayIterative(std::ostream& out, const std::vector<double>& a, int fieldWidth, int precision) {
+    auto flags = out.flags();
+    out << std::fixed << std::setprecision(precision);
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        out << std::setw(fieldWidth) << a[i];
+    }
+    out << '\n';
+    out.flags(flags);
+}
 
-int countPositive(const std::vector<double>& values, const bool recursive) {
-    if (recursive) return countPositiveRecursive(values, 0);
+int countPositiveIterative(const std::vector<double>& a) {
     int count = 0;
-    for (double value : values) count += value > 0.0;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        if (a[i] > 0.0) ++count;
+    }
     return count;
 }
 
-int lastZeroIndex(const std::vector<double>& values, const bool recursive) {
-    if (recursive) return lastZeroRecursive(values, 0, -1);
-    int last = -1;
-    for (std::size_t i = 0; i < values.size(); ++i)
-        if (values[i] == 0.0) last = static_cast<int>(i);
-    return last;
+int findLastZeroIndexIterative(const std::vector<double>& a, double eps) {
+    for (int i = static_cast<int>(a.size()) - 1; i >= 0; --i) {
+        if (isZero(a[static_cast<std::size_t>(i)], eps)) {
+            return i;
+        }
+    }
+    return -1;
 }
 
-double sumAfter(const std::vector<double>& values, const int index, const bool recursive) {
-    if (index < -1 || index >= static_cast<int>(values.size()))
-        throw std::out_of_range("Index must identify a position or be -1.");
-    const std::size_t start = static_cast<std::size_t>(index + 1);
-    if (recursive) return sumAfterRecursive(values, start);
+double sumAfterIndexIterative(const std::vector<double>& a, int startIndex) {
+    if (startIndex < -1 || startIndex >= static_cast<int>(a.size())) {
+        throw std::out_of_range("startIndex out of range.");
+    }
     double sum = 0.0;
-    for (std::size_t i = start; i < values.size(); ++i) sum += values[i];
+    for (std::size_t i = static_cast<std::size_t>(startIndex + 1); i < a.size(); ++i) {
+        sum += a[i];
+    }
     return sum;
 }
 
-void stablePartition(std::vector<double>& values, const bool recursive) {
-    if (recursive) {
-        partitionRecursive(values, 0);
+double sumAfterLastZeroIterative(const std::vector<double>& a, double eps) {
+    int lastZero = findLastZeroIndexIterative(a, eps);
+    if (lastZero == -1 || lastZero >= static_cast<int>(a.size()) - 1) {
+        return 0.0;
+    }
+    return sumAfterIndexIterative(a, lastZero);
+}
+
+void partitionByIntPartIterative(std::vector<double>& a) {
+    std::size_t writePos = 0;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        if (hasIntPartAtMostOne(a[i])) {
+            double temp = a[i];
+            for (std::size_t k = i; k > writePos; --k) {
+                a[k] = a[k - 1];
+            }
+            a[writePos] = temp;
+            ++writePos;
+        }
+    }
+}
+
+// ============================================================================
+// Recursive Implementations (Method 2)
+// ============================================================================
+
+void initArrayRecursive(std::vector<double>& a, double minVal, double maxVal, std::size_t i) {
+    if (i >= a.size()) return;
+    if (i == 0 && minVal > maxVal) throw std::invalid_argument("minVal cannot exceed maxVal.");
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(minVal, maxVal);
+    a[i] = dist(gen);
+    initArrayRecursive(a, minVal, maxVal, i + 1);
+}
+
+void printArrayRecursive(std::ostream& out, const std::vector<double>& a, std::size_t i, int fieldWidth, int precision) {
+    if (i >= a.size()) {
+        out << '\n';
         return;
     }
-    std::vector<double> reordered;
-    reordered.reserve(values.size());
-    for (double value : values) if (value < 2.0) reordered.push_back(value);
-    for (double value : values) if (value >= 2.0) reordered.push_back(value);
-    values.swap(reordered);
+    auto flags = out.flags();
+    out << std::fixed << std::setprecision(precision) << std::setw(fieldWidth) << a[i];
+    out.flags(flags);
+    printArrayRecursive(out, a, i + 1, fieldWidth, precision);
+}
+
+int countPositiveRecursive(const std::vector<double>& a, std::size_t i) {
+    if (i >= a.size()) return 0;
+    int current = (a[i] > 0.0) ? 1 : 0;
+    return current + countPositiveRecursive(a, i + 1);
+}
+
+int findLastZeroIndexRecursive(const std::vector<double>& a, int i, double eps) {
+    if (i < 0) return -1;
+    if (isZero(a[static_cast<std::size_t>(i)], eps)) return i;
+    return findLastZeroIndexRecursive(a, i - 1, eps);
+}
+
+double sumFromIndexRecursive(const std::vector<double>& a, std::size_t i) {
+    if (i >= a.size()) return 0.0;
+    return a[i] + sumFromIndexRecursive(a, i + 1);
+}
+
+double sumAfterLastZeroRecursive(const std::vector<double>& a, double eps) {
+    if (a.empty()) return 0.0;
+    int lastZero = findLastZeroIndexRecursive(a, static_cast<int>(a.size()) - 1, eps);
+    if (lastZero == -1 || lastZero >= static_cast<int>(a.size()) - 1) {
+        return 0.0;
+    }
+    return sumFromIndexRecursive(a, static_cast<std::size_t>(lastZero + 1));
+}
+
+void shiftRightRecursive(std::vector<double>& a, std::size_t writePos, std::size_t k) {
+    if (k <= writePos) return;
+    a[k] = a[k - 1];
+    shiftRightRecursive(a, writePos, k - 1);
+}
+
+void partitionByIntPartRecursive(std::vector<double>& a, std::size_t i, std::size_t writePos) {
+    if (i >= a.size()) return;
+
+    std::size_t nextWritePos = writePos;
+    if (hasIntPartAtMostOne(a[i])) {
+        double temp = a[i];
+        shiftRightRecursive(a, writePos, i);
+        a[writePos] = temp;
+        nextWritePos = writePos + 1;
+    }
+
+    partitionByIntPartRecursive(a, i + 1, nextWritePos);
+}
+
+// ============================================================================
+// Unified Dispatcher Functions
+// ============================================================================
+
+int countPositive(const std::vector<double>& values, bool recursive) {
+    return recursive ? countPositiveRecursive(values, 0) : countPositiveIterative(values);
+}
+
+int lastZeroIndex(const std::vector<double>& values, bool recursive) {
+    if (values.empty()) return -1;
+    return recursive
+        ? findLastZeroIndexRecursive(values, static_cast<int>(values.size()) - 1)
+        : findLastZeroIndexIterative(values);
+}
+
+double sumAfter(const std::vector<double>& values, int index, bool recursive) {
+    if (index < -1 || index >= static_cast<int>(values.size())) {
+        throw std::out_of_range("Index must identify a position or be -1.");
+    }
+    const std::size_t start = static_cast<std::size_t>(index + 1);
+    if (recursive) return sumFromIndexRecursive(values, start);
+    return sumAfterIndexIterative(values, index);
+}
+
+void stablePartition(std::vector<double>& values, bool recursive) {
+    if (recursive) partitionByIntPartRecursive(values, 0, 0);
+    else partitionByIntPartIterative(values);
 }
 
 } // namespace Lb6::Task4

@@ -133,7 +133,67 @@ int main() {
         require((allLow == std::vector<double>{-2, 0.5, 1.9}));
         std::vector<double> allHigh{2, 3, 4};
         Lb6::Dynamic::stablePartition(allHigh, recursive);
-        require((allHigh == std::vector<double>{2, 3, 4}));
+    }
+
+    // ------------------------------------------------------------------------
+    // Task 6.4 Verification Matrix: TC-01 .. TC-07
+    // ------------------------------------------------------------------------
+    const struct Task4TestCase {
+        std::vector<double> input;
+        int expectedPositive;
+        int expectedLastZero;
+        double expectedSumAfter;
+        std::vector<double> expectedPartition;
+    } task4Cases[] = {
+        // TC-01: Complex test with two zeros, multiple elements
+        { {3.5, 0.0, -2.4, 1.8, 0.0, 4.2, 0.9}, 4, 4, 5.1, {0.0, -2.4, 1.8, 0.0, 0.9, 3.5, 4.2} },
+        // TC-02: No zero elements -> sum = 0.0
+        { {2.5, -1.2, 5.0, 1.1}, 3, -1, 0.0, {-1.2, 1.1, 2.5, 5.0} },
+        // TC-03: Last zero at the end of array (k_last = n - 1) -> sum = 0.0
+        { {4.0, 0.0, 2.5, -3.5, 0.0}, 2, 4, 0.0, {0.0, -3.5, 0.0, 4.0, 2.5} },
+        // TC-04: No positive elements (0.0 is non-positive)
+        { {-5.5, -0.1, 0.0, -2.0}, 0, 2, -2.0, {-5.5, -0.1, 0.0, -2.0} },
+        // TC-05: Boundary integer part test (1.99 <= 1, 2.0 > 1)
+        { {2.0, 2.01, 1.99, 1.0, -2.5}, 4, -1, 0.0, {1.99, 1.0, -2.5, 2.0, 2.01} },
+        // TC-06: All elements have int part > 1 (order preserved)
+        { {10.5, 20.1, 3.14}, 3, -1, 0.0, {10.5, 20.1, 3.14} },
+        // TC-07: Single zero at index 0 -> sum of all remaining elements
+        { {0.0, 1.5, -2.5, 3.0}, 2, 0, 2.0, {0.0, 1.5, -2.5, 3.0} }
+    };
+
+    for (const auto& tc : task4Cases) {
+        // Test Iterative methods
+        require(Lb6::Task4::countPositiveIterative(tc.input) == tc.expectedPositive);
+        require(Lb6::Task4::findLastZeroIndexIterative(tc.input) == tc.expectedLastZero);
+        require(std::fabs(Lb6::Task4::sumAfterLastZeroIterative(tc.input) - tc.expectedSumAfter) < 1e-9);
+        std::vector<double> aIt = tc.input;
+        Lb6::Task4::partitionByIntPartIterative(aIt);
+        require(aIt.size() == tc.expectedPartition.size());
+        for (std::size_t j = 0; j < aIt.size(); ++j) {
+            require(std::fabs(aIt[j] - tc.expectedPartition[j]) < 1e-9);
+        }
+
+        // Test Recursive methods
+        require(Lb6::Task4::countPositiveRecursive(tc.input, 0) == tc.expectedPositive);
+        require(Lb6::Task4::findLastZeroIndexRecursive(tc.input, static_cast<int>(tc.input.size()) - 1) == tc.expectedLastZero);
+        require(std::fabs(Lb6::Task4::sumAfterLastZeroRecursive(tc.input) - tc.expectedSumAfter) < 1e-9);
+        std::vector<double> aRec = tc.input;
+        Lb6::Task4::partitionByIntPartRecursive(aRec, 0, 0);
+        require(aRec.size() == tc.expectedPartition.size());
+        for (std::size_t j = 0; j < aRec.size(); ++j) {
+            require(std::fabs(aRec[j] - tc.expectedPartition[j]) < 1e-9);
+        }
+
+        // Test Unified dispatchers
+        for (bool recursive : {false, true}) {
+            require(Lb6::Dynamic::countPositive(tc.input, recursive) == tc.expectedPositive);
+            require(Lb6::Dynamic::lastZeroIndex(tc.input, recursive) == tc.expectedLastZero);
+            std::vector<double> aUnified = tc.input;
+            Lb6::Dynamic::stablePartition(aUnified, recursive);
+            for (std::size_t j = 0; j < aUnified.size(); ++j) {
+                require(std::fabs(aUnified[j] - tc.expectedPartition[j]) < 1e-9);
+            }
+        }
     }
     // ------------------------------------------------------------------------
     // Task 6.3 Verification Matrix: TC-01 .. TC-07

@@ -119,23 +119,52 @@ void runDynamicArrayTask(const bool recursive) {
     std::cout << "-> array size n: ";
     if (!Common::IO::read(std::cin, n)) return;
     if (n == 0) throw std::invalid_argument("Array size must be positive.");
-    std::mt19937 engine(static_cast<unsigned>(std::time(nullptr)));
-    std::uniform_int_distribution<int> distribution(-20, 20);
+
     std::vector<double> values(n);
-    for (double& value : values) value = distribution(engine) / 2.0;
-    std::cout << "Original array:\n";
-    Lb6::printArray(std::cout, values);
     if (recursive) {
+        std::cout << "[Recursive approach]\n";
         Common::Recursion::printSummary(std::cout, "DynamicArrayOperations (recursive)", static_cast<int>(n + 1));
+        Lb6::Task4::initArrayRecursive(values, -5.0, 5.0, 0);
+        std::cout << "Original array:\n";
+        Lb6::Task4::printArrayRecursive(std::cout, values, 0);
+
+        int posCount = Lb6::Task4::countPositiveRecursive(values, 0);
+        int lastZero = Lb6::Task4::findLastZeroIndexRecursive(values, static_cast<int>(n) - 1);
+        double sumAfter = Lb6::Task4::sumAfterLastZeroRecursive(values);
+
+        std::cout << "Positive elements count = " << posCount << '\n';
+        if (lastZero < 0) {
+            std::cout << "No zero elements found in array (sum after last zero = 0.0)\n";
+        } else {
+            std::cout << "Last zero index = " << lastZero
+                      << ", sum after last zero = " << std::fixed << std::setprecision(2) << sumAfter << '\n';
+        }
+
+        Lb6::Task4::partitionByIntPartRecursive(values, 0, 0);
+        std::cout << "Array after stable partition (trunc(x) <= 1 before others):\n";
+        Lb6::Task4::printArrayRecursive(std::cout, values, 0);
+    } else {
+        std::cout << "[Iterative approach]\n";
+        Lb6::Task4::initArrayIterative(values, -5.0, 5.0);
+        std::cout << "Original array:\n";
+        Lb6::Task4::printArrayIterative(std::cout, values);
+
+        int posCount = Lb6::Task4::countPositiveIterative(values);
+        int lastZero = Lb6::Task4::findLastZeroIndexIterative(values);
+        double sumAfter = Lb6::Task4::sumAfterLastZeroIterative(values);
+
+        std::cout << "Positive elements count = " << posCount << '\n';
+        if (lastZero < 0) {
+            std::cout << "No zero elements found in array (sum after last zero = 0.0)\n";
+        } else {
+            std::cout << "Last zero index = " << lastZero
+                      << ", sum after last zero = " << std::fixed << std::setprecision(2) << sumAfter << '\n';
+        }
+
+        Lb6::Task4::partitionByIntPartIterative(values);
+        std::cout << "Array after stable partition (trunc(x) <= 1 before others):\n";
+        Lb6::Task4::printArrayIterative(std::cout, values);
     }
-    std::cout << "positive count = " << Lb6::Dynamic::countPositive(values, recursive) << '\n';
-    const int lastZero = Lb6::Dynamic::lastZeroIndex(values, recursive);
-    if (lastZero < 0) std::cout << "no zero elements; sum is undefined\n";
-    else std::cout << "sum after last zero = "
-                   << Lb6::Dynamic::sumAfter(values, lastZero, recursive) << '\n';
-    Lb6::Dynamic::stablePartition(values, recursive);
-    std::cout << "Array after stable partition (< 2 before >= 2):\n";
-    Lb6::printArray(std::cout, values);
 }
 
 } // namespace
