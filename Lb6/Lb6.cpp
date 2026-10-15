@@ -45,22 +45,30 @@ void runSelectedArrayTask(const bool recursive) {
 }
 
 void runMaxEvenIndexTask(const bool recursive) {
-    std::cout << "\n=== Task 2: Largest Even Value Index ===\n";
+    std::cout << "\n=== Task 2: Largest Even Value Index (Variant 17) ===\n";
     std::size_t n = 0;
     std::cout << "-> array size n: ";
-    if (!Common::IO::read(std::cin, n)) return;
-    std::mt19937 engine(static_cast<unsigned>(std::time(nullptr)));
-    std::uniform_int_distribution<int> distribution(-50, 50);
+    if (!Common::IO::read(std::cin, n) || n == 0) return;
     std::vector<int> values(n);
-    for (int& value : values) value = distribution(engine);
-    std::cout << "Generated array:\n";
-    Lb6::printArray(std::cout, values);
+
     if (recursive) {
+        std::cout << "[Recursive approach]\n";
         Common::Recursion::printSummary(std::cout, "maxEvenIndex (recursive)", static_cast<int>(n + 1));
+        Lb6::Task2::initArrayRecursive(values, Lb6::Task2::DEFAULT_MIN_VAL, Lb6::Task2::DEFAULT_MAX_VAL, 0);
+        std::cout << "Generated array:\n";
+        Lb6::Task2::printArrayRecursive(std::cout, values, 0);
+        const int index = Lb6::Task2::findMaxEvenIndexRecursive(values, 0, -1);
+        if (index < 0) std::cout << "even elements not found\n";
+        else std::cout << "largest even value index = " << index << " (value = " << values[index] << ")\n";
+    } else {
+        std::cout << "[Iterative approach]\n";
+        Lb6::Task2::initArrayIterative(values, Lb6::Task2::DEFAULT_MIN_VAL, Lb6::Task2::DEFAULT_MAX_VAL);
+        std::cout << "Generated array:\n";
+        Lb6::Task2::printArrayIterative(std::cout, values);
+        const int index = Lb6::Task2::findMaxEvenIndexIterative(values);
+        if (index < 0) std::cout << "even elements not found\n";
+        else std::cout << "largest even value index = " << index << " (value = " << values[index] << ")\n";
     }
-    const int index = Lb6::maxEvenIndex(values, recursive);
-    if (index < 0) std::cout << "even elements not found\n";
-    else std::cout << "largest even value index = " << index << " (value = " << values[index] << ")\n";
 }
 
 void runInputFunctionsTask(const bool recursive) {

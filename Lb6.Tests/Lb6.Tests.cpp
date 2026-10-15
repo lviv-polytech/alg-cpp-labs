@@ -79,12 +79,43 @@ int main() {
         require(caught);
     }
 
+    // ------------------------------------------------------------------------
+    // Task 6.2 (Variant 17) Verification Matrix: TC-01 .. TC-09
+    // ------------------------------------------------------------------------
+    const struct TestCase {
+        std::vector<int> input;
+        int expectedIndex;
+    } testCases[] = {
+        {{3, 8, 15, 12, 7, 4}, 3},       // TC-01: Base test, odd max 15 ignored, max even is 12 at index 3
+        {{5, -3, 11, 1, 9}, -1},          // TC-02: No even elements -> -1
+        {{-10, -4, -7, -2, -8}, 3},       // TC-03: All even elements negative, max is -2 at index 3
+        {{-5, 0, -2, -9}, 1},             // TC-04: Zero as even number (0 > -2) at index 1
+        {{6, 14, 9, 14, 2}, 1},           // TC-05: Duplicate max even values -> first occurrence at index 1
+        {{42}, 0},                        // TC-06: Single even element at index 0
+        {{17}, -1},                       // TC-07: Single odd element -> -1
+        {{20, 4, 2, -6}, 0},              // TC-08: Maximum at first position (i = 0)
+        {{2, 4, 8, 24}, 3},               // TC-09: Maximum at last position (i = n - 1)
+        {{}, -1}                          // Empty vector -> -1
+    };
+
+    // Test Task 2 Iterative
+    for (const auto& tc : testCases) {
+        require(Lb6::Task2::findMaxEvenIndexIterative(tc.input) == tc.expectedIndex);
+    }
+
+    // Test Task 2 Recursive
+    for (const auto& tc : testCases) {
+        require(Lb6::Task2::findMaxEvenIndexRecursive(tc.input, 0, -1) == tc.expectedIndex);
+    }
+
+    // Test Task 2 Unified Dispatcher
     for (bool recursive : {false, true}) {
-        require(Lb6::maxEvenIndex({3, -8, 14, 7, 14, 2, 9}, recursive) == 2);
-        require(Lb6::maxEvenIndex({1, 3, 5}, recursive) == -1);
-        require(Lb6::maxEvenIndex({-4, -2, -10}, recursive) == 1);
-        require(Lb6::maxEvenIndex({0}, recursive) == 0);
-        require(Lb6::maxEvenIndex({4, 6, 6}, recursive) == 1);
+        for (const auto& tc : testCases) {
+            require(Lb6::maxEvenIndex(tc.input, recursive) == tc.expectedIndex);
+        }
+    }
+
+    for (bool recursive : {false, true}) {
         std::vector<double> data{1.5, 0, -3.2, 2.0, 0.7, 0, 4.5, -1.0, 2.5};
         require(Lb6::Dynamic::countPositive(data, recursive) == 5);
         const int zero = Lb6::Dynamic::lastZeroIndex(data, recursive);

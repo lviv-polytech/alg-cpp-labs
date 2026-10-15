@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "task1/ArraySelection.h"
+#include "task2/EvenIndexSearch.h"
 
 namespace Lb6 {
 

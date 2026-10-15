@@ -10,9 +10,17 @@ Modular C++17 implementation of one-dimensional array algorithms using iterative
    - **Invariants:**
      - $20 \le K \le 25$ matching elements.
      - $80 \le S \le 1825$ cumulative sum.
-     - Modifications occur strictly after calculation: $\text{Generate} \to \text{Print} \to (\text{Count}, \text{Sum}) \to \text{Zero} \to \text{Print}$.
-   - **Decomposition (Single Responsibility):** Separate functions for iterative (`generateArray`, `printArray`, `countElements`, `sumElements`, `zeroElements`) and recursive (`generateArrayRec`, `printArrayRec`, `countElementsRec`, `sumElementsRec`, `zeroElementsRec`) approaches.
-2. **Task 6.2:** Search for the first index of the maximum even element.
+     - Sequence: $\text{Generate} \to \text{Print} \to (\text{Count}, \text{Sum}) \to \text{Zero} \to \text{Print}$.
+   - **Decomposition:** `generateArray`, `printArray`, `countElements`, `sumElements`, `zeroElements` (with recursive counterparts `generateArrayRec`, `printArrayRec`, `countElementsRec`, `sumElementsRec`, `zeroElementsRec`).
+
+2. **Task 6.2 (Variant 17): Search for the Index of the Maximum Even Element**
+   - **Domain:** One-dimensional array $a = (a_0, a_1, \dots, a_{n-1})$ of arbitrary dimension $n \ge 1$ with $a_i \in [-50, 50]$.
+   - **Evenness Predicate:** $P(x) \iff (x \bmod 2 = 0)$ (correctly handles negative values and zero: $0 \bmod 2 = 0$).
+   - **Solution Existence & Tie-Breaking:**
+     - If no even numbers exist ($I_{\text{even}} = \varnothing$), returns sentinel value $k^* = -1$.
+     - If duplicates of the maximum even value exist, returns the first occurrence (smallest index): $k^* = \min \{ i \in I_{\text{even}} \mid a_i = \max_{j \in I_{\text{even}}} a_j \}$.
+   - **Decomposition:** `initArrayIterative`, `printArrayIterative`, `findMaxEvenIndexIterative`, `initArrayRecursive`, `printArrayRecursive`, `findMaxEvenIndexRecursive`.
+
 3. **Task 6.3:** Array input overloads and template functions.
 4. **Task 6.4:** Dynamic array processing: positive count, sum after last zero, and stable partition around value $2.0$.
 
@@ -40,19 +48,17 @@ ctest --test-dir build --output-on-failure -R Lb6
 
 ```mermaid
 flowchart TD
-    Start["Start Task 6.1: Variant 17"] --> Gen["Generate array: 25 integers in range [4, 73]"]
-    Gen --> PrintInit["Print initial formatted array: width = 4"]
-    PrintInit --> EvalLoop["Evaluate elements: (i = 0 .. 24)"]
-    EvalLoop --> Match{"(r[i] % 6 == 0) || (i % 5 != 0)?"}
-    Match -- "Yes" --> Accum["Increment count K, accumulate sum S"]
-    Match -- "No" --> NextElem["Keep element intact"]
-    Accum --> NextElem
-    NextElem --> CheckEnd{"i == 24?"}
-    CheckEnd -- "No" --> EvalLoop
-    CheckEnd -- "Yes" --> ModLoop["Zero elements where predicate is true"]
-    ModLoop --> PrintResult["Print Count K and Sum S"]
-    PrintResult --> PrintFinal["Print modified formatted array (with zeros)"]
-    PrintFinal --> Finish["End"]
+    Start["Start Task 6.2: Search Max Even Index"] --> Input["Vector a of size n, initialize bestIndex = -1, i = 0"]
+    Input --> CheckEnd{"i < n?"}
+    CheckEnd -- "Yes" --> CheckEven{"a[i] % 2 == 0?"}
+    CheckEven -- "Yes" --> Compare{"bestIndex == -1 || a[i] > a[bestIndex]?"}
+    Compare -- "Yes" --> UpdateBest["bestIndex = i"]
+    Compare -- "No" --> NextStep["i = i + 1"]
+    CheckEven -- "No" --> NextStep
+    UpdateBest --> NextStep
+    NextStep --> CheckEnd
+    CheckEnd -- "No" --> Result["Return bestIndex (-1 if no even elements)"]
+    Result --> Finish["End"]
 ```
 
 ### Execution Flow / Activity Diagram (`stateDiagram-v2`)
@@ -60,20 +66,21 @@ flowchart TD
 ```mermaid
 stateDiagram-v2
     [*] --> Initialization
-    Initialization --> ArrayGeneration: "Generate values in [4, 73]"
-    ArrayGeneration --> DisplayInitial: "Formatted print"
-    DisplayInitial --> Processing
+    Initialization --> ArrayGeneration: "Generate n elements in [-50, 50]"
+    ArrayGeneration --> DisplayInitial: "Print formatted array (width = 5)"
+    DisplayInitial --> SearchState
     
-    state Processing {
-        [*] --> CountElements: "Count matching elements (iterative / recursive)"
-        CountElements --> SumElements: "Sum matching elements (iterative / recursive)"
-        SumElements --> ZeroElements: "In-place zeroing after metrics computed"
-        ZeroElements --> [*]
+    state SearchState {
+        [*] --> EvaluateElement: "Check parity (a[i] % 2 == 0)"
+        EvaluateElement --> CandidateUpdate: "Update bestIndex if a[i] > a[bestIndex]"
+        CandidateUpdate --> CheckNext: "Next index i + 1"
+        EvaluateElement --> CheckNext: "Element is odd -> skip"
+        CheckNext --> EvaluateElement: "i < n"
+        CheckNext --> [*]: "i >= n"
     }
     
-    Processing --> DisplayMetrics: "Print K and S"
-    DisplayMetrics --> DisplayModified: "Formatted print of modified array"
-    DisplayModified --> [*]
+    SearchState --> OutputResult: "Return bestIndex (-1 sentinel if absent)"
+    OutputResult --> [*]
 ```
 
 ### Module Architecture Diagram (`classDiagram`)
@@ -81,25 +88,15 @@ stateDiagram-v2
 ```mermaid
 classDiagram
     namespace Lb6 {
-        class Task1 {
-            +isSelected(index: int, value: int) bool
-            +generateArray(values: vector~int~, low: int, high: int) void
-            +printArray(out: ostream, values: vector~int~) void
-            +countElements(values: vector~int~) int
-            +sumElements(values: vector~int~) int
-            +zeroElements(values: vector~int~) void
-            +generateArrayRec(values: vector~int~, low: int, high: int, i: size_t) void
-            +printArrayRec(out: ostream, values: vector~int~, i: size_t) void
-            +countElementsRec(values: vector~int~, i: size_t) int
-            +sumElementsRec(values: vector~int~, i: size_t) int
-            +zeroElementsRec(values: vector~int~, i: size_t) void
-            +processSelection(values: vector~int~, recursive: bool) SelectionResult
-        }
-        class SelectionResult {
-            +count: int
-            +sum: int
+        class Task2 {
+            +isEven(value: int) bool
+            +initArrayIterative(a: vector~int~, minVal: int, maxVal: int) void
+            +printArrayIterative(out: ostream, a: vector~int~) void
+            +findMaxEvenIndexIterative(a: vector~int~) int
+            +initArrayRecursive(a: vector~int~, minVal: int, maxVal: int, i: size_t) void
+            +printArrayRecursive(out: ostream, a: vector~int~, i: size_t) void
+            +findMaxEvenIndexRecursive(a: vector~int~, i: size_t, bestIndex: int) int
+            +maxEvenIndex(values: vector~int~, recursive: bool) int
         }
     }
-    
-    Task1 --> SelectionResult : returns
 ```
