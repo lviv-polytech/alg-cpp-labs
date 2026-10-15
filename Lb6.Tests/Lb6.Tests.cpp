@@ -135,6 +135,119 @@ int main() {
         Lb6::Dynamic::stablePartition(allHigh, recursive);
         require((allHigh == std::vector<double>{2, 3, 4}));
     }
+    // ------------------------------------------------------------------------
+    // Task 6.3 Verification Matrix: TC-01 .. TC-07
+    // ------------------------------------------------------------------------
+    // TC-01: Ordinary int function (n = 5)
+    {
+        int arrIt[5]{};
+        std::istringstream streamIt("10 -25 0 42 -7");
+        Lb6::Task3::inputArrayIterative(arrIt, 5, streamIt);
+        require(arrIt[0] == 10 && arrIt[1] == -25 && arrIt[2] == 0 && arrIt[3] == 42 && arrIt[4] == -7);
+
+        int arrRec[5]{};
+        std::istringstream streamRec("10 -25 0 42 -7");
+        Lb6::Task3::inputArrayRecursive(arrRec, 5, 0, streamRec);
+        require(arrRec[0] == 10 && arrRec[1] == -25 && arrRec[2] == 0 && arrRec[3] == 42 && arrRec[4] == -7);
+    }
+
+    // TC-02: Template function with T = int (n = 5)
+    {
+        int arrIt[5]{};
+        std::istringstream streamIt("10 -25 0 42 -7");
+        Lb6::Task3::inputArrayIterativeTemplate(arrIt, 5, streamIt);
+        require(arrIt[0] == 10 && arrIt[1] == -25 && arrIt[2] == 0 && arrIt[3] == 42 && arrIt[4] == -7);
+
+        int arrRec[5]{};
+        std::istringstream streamRec("10 -25 0 42 -7");
+        Lb6::Task3::inputArrayRecursiveTemplate(arrRec, 5, 0, streamRec);
+        require(arrRec[0] == 10 && arrRec[1] == -25 && arrRec[2] == 0 && arrRec[3] == 42 && arrRec[4] == -7);
+    }
+
+    // TC-03: Template function with T = double (n = 4)
+    {
+        double arrIt[4]{};
+        std::istringstream streamIt("3.14 -0.005 0.0 100.25");
+        Lb6::Task3::inputArrayIterativeTemplate(arrIt, 4, streamIt);
+        require(std::fabs(arrIt[0] - 3.14) < 1e-9 && std::fabs(arrIt[1] - (-0.005)) < 1e-9 &&
+                std::fabs(arrIt[2] - 0.0) < 1e-9 && std::fabs(arrIt[3] - 100.25) < 1e-9);
+
+        double arrRec[4]{};
+        std::istringstream streamRec("3.14 -0.005 0.0 100.25");
+        Lb6::Task3::inputArrayRecursiveTemplate(arrRec, 4, 0, streamRec);
+        require(std::fabs(arrRec[0] - 3.14) < 1e-9 && std::fabs(arrRec[1] - (-0.005)) < 1e-9 &&
+                std::fabs(arrRec[2] - 0.0) < 1e-9 && std::fabs(arrRec[3] - 100.25) < 1e-9);
+    }
+
+    // TC-04: Template function with T = string (n = 3)
+    {
+        std::string arrIt[3];
+        std::istringstream streamIt("alpha beta gamma");
+        Lb6::Task3::inputArrayIterativeTemplate(arrIt, 3, streamIt);
+        require(arrIt[0] == "alpha" && arrIt[1] == "beta" && arrIt[2] == "gamma");
+
+        std::string arrRec[3];
+        std::istringstream streamRec("alpha beta gamma");
+        Lb6::Task3::inputArrayRecursiveTemplate(arrRec, 3, 0, streamRec);
+        require(arrRec[0] == "alpha" && arrRec[1] == "beta" && arrRec[2] == "gamma");
+    }
+
+    // TC-05: Single element (n = 1)
+    {
+        int arrIt[1]{};
+        std::istringstream streamIt("-999");
+        Lb6::Task3::inputArrayIterative(arrIt, 1, streamIt);
+        require(arrIt[0] == -999);
+
+        int arrRec[1]{};
+        std::istringstream streamRec("-999");
+        Lb6::Task3::inputArrayRecursive(arrRec, 1, 0, streamRec);
+        require(arrRec[0] == -999);
+    }
+
+    // TC-06: Zero elements (n = 0, no reads performed)
+    {
+        int arrIt[1]{ 777 };
+        std::istringstream streamIt("100 200");
+        Lb6::Task3::inputArrayIterative(arrIt, 0, streamIt);
+        require(arrIt[0] == 777);
+
+        int arrRec[1]{ 777 };
+        std::istringstream streamRec("100 200");
+        Lb6::Task3::inputArrayRecursive(arrRec, 0, 0, streamRec);
+        require(arrRec[0] == 777);
+    }
+
+    // TC-07: Diverse delimiters and extra tokens remaining in stream
+    {
+        int arrIt[3]{};
+        std::istringstream streamIt("  5 \n\t 12 \n  -8  99 100");
+        Lb6::Task3::inputArrayIterative(arrIt, 3, streamIt);
+        require(arrIt[0] == 5 && arrIt[1] == 12 && arrIt[2] == -8);
+        int extra = 0;
+        streamIt >> extra;
+        require(extra == 99);
+
+        int arrRec[3]{};
+        std::istringstream streamRec("  5 \n\t 12 \n  -8  99 100");
+        Lb6::Task3::inputArrayRecursive(arrRec, 3, 0, streamRec);
+        require(arrRec[0] == 5 && arrRec[1] == 12 && arrRec[2] == -8);
+        extra = 0;
+        streamRec >> extra;
+        require(extra == 99);
+    }
+
+    // Formatted print tests
+    {
+        int sample[3] = { 1, 2, 3 };
+        std::ostringstream outIt, outRec;
+        Lb6::Task3::printArrayIterative(sample, 3, outIt, 4);
+        Lb6::Task3::printArrayRecursive(sample, 3, 0, outRec, 4);
+        require(outIt.str() == "   1   2   3\n");
+        require(outRec.str() == "   1   2   3\n");
+    }
+
+    // Backward compatibility checks
     int integers[3]{};
     std::istringstream input("3 5 7");
     std::ostringstream prompts;

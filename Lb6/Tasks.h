@@ -9,6 +9,7 @@
 
 #include "task1/ArraySelection.h"
 #include "task2/EvenIndexSearch.h"
+#include "task3/ArrayInput.h"
 
 namespace Lb6 {
 

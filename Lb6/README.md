@@ -21,7 +21,13 @@ Modular C++17 implementation of one-dimensional array algorithms using iterative
      - If duplicates of the maximum even value exist, returns the first occurrence (smallest index): $k^* = \min \{ i \in I_{\text{even}} \mid a_i = \max_{j \in I_{\text{even}}} a_j \}$.
    - **Decomposition:** `initArrayIterative`, `printArrayIterative`, `findMaxEvenIndexIterative`, `initArrayRecursive`, `printArrayRecursive`, `findMaxEvenIndexRecursive`.
 
-3. **Task 6.3:** Array input overloads and template functions.
+3. **Task 6.3: Keyboard & Stream Array Input via Ordinary and Function Templates**
+   - **Domain:** Sequential reading and formatted printing of 1D arrays of size $n$ from input streams (`std::istream`, with default `std::cin`).
+   - **Dual Typification:**
+     - **Part A (Ordinary Functions):** Type-specialized for `int`: `inputArrayIterative`, `printArrayIterative`, `inputArrayRecursive`, `printArrayRecursive`.
+     - **Part B (Function Templates):** Parametric polymorphism for generic type $T$ (`int`, `double`, `std::string`): `inputArrayIterativeTemplate<T>`, `printArrayIterativeTemplate<T>`, `inputArrayRecursiveTemplate<T>`, `printArrayRecursiveTemplate<T>`.
+   - **Deterministic Unit Testing:** Supports dependency injection of streams (`std::istringstream` and `std::ostringstream`) to verify automated execution without interactive user intervention.
+
 4. **Task 6.4:** Dynamic array processing: positive count, sum after last zero, and stable partition around value $2.0$.
 
 ## Execution Guide
@@ -48,55 +54,81 @@ ctest --test-dir build --output-on-failure -R Lb6
 
 ```mermaid
 flowchart TD
-    Start["Start Task 6.2: Search Max Even Index"] --> Input["Vector a of size n, initialize bestIndex = -1, i = 0"]
-    Input --> CheckEnd{"i < n?"}
-    CheckEnd -- "Yes" --> CheckEven{"a[i] % 2 == 0?"}
-    CheckEven -- "Yes" --> Compare{"bestIndex == -1 || a[i] > a[bestIndex]?"}
-    Compare -- "Yes" --> UpdateBest["bestIndex = i"]
-    Compare -- "No" --> NextStep["i = i + 1"]
-    CheckEven -- "No" --> NextStep
-    UpdateBest --> NextStep
-    NextStep --> CheckEnd
-    CheckEnd -- "No" --> Result["Return bestIndex (-1 if no even elements)"]
-    Result --> Finish["End"]
+    Start["Start Task 6.3: Stream Array Input & Print"] --> ChooseMode{"Choose Paradigm: Iterative or Recursive?"}
+    
+    ChooseMode -- "Iterative" --> ItLoop["For i = 0 to n - 1"]
+    ItLoop --> ItPrompt["Optional prompt: a[i] = "]
+    ItPrompt --> ItRead["Read token s_i into a[i] from stream"]
+    ItRead --> ItCheck{"i == n - 1?"}
+    ItCheck -- "No" --> ItLoop
+    ItCheck -- "Yes" --> ItPrint["Format print array elements with fixed width"]
+    
+    ChooseMode -- "Recursive" --> RecCall["Recursive step at index i (initial: 0)"]
+    RecCall --> BaseCase{"i >= n?"}
+    BaseCase -- "Yes" --> Terminate["Return (stop recursion)"]
+    BaseCase -- "No" --> RecPrompt["Optional prompt: a[i] = "]
+    RecPrompt --> RecRead["Read token s_i into a[i] from stream"]
+    RecRead --> RecNext["Recursive call for index i + 1"]
+    RecNext --> BaseCase
+    
+    ItPrint --> Finish["End"]
+    Terminate --> RecPrint["Format print array elements recursively"]
+    RecPrint --> Finish
 ```
 
 ### Execution Flow / Activity Diagram (`stateDiagram-v2`)
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Initialization
-    Initialization --> ArrayGeneration: "Generate n elements in [-50, 50]"
-    ArrayGeneration --> DisplayInitial: "Print formatted array (width = 5)"
-    DisplayInitial --> SearchState
+    [*] --> Setup
+    Setup --> StreamInjection: "Inject input stream (std::cin or std::istringstream)"
+    StreamInjection --> InputPhase
     
-    state SearchState {
-        [*] --> EvaluateElement: "Check parity (a[i] % 2 == 0)"
-        EvaluateElement --> CandidateUpdate: "Update bestIndex if a[i] > a[bestIndex]"
-        CandidateUpdate --> CheckNext: "Next index i + 1"
-        EvaluateElement --> CheckNext: "Element is odd -> skip"
-        CheckNext --> EvaluateElement: "i < n"
-        CheckNext --> [*]: "i >= n"
+    state InputPhase {
+        [*] --> CheckBoundary: "Check index i < n"
+        CheckBoundary --> ReadToken: "Stream extraction into a[i]"
+        ReadToken --> AdvanceIndex: "Increment index (loop or tail call)"
+        AdvanceIndex --> CheckBoundary
+        CheckBoundary --> [*]: "i >= n"
     }
     
-    SearchState --> OutputResult: "Return bestIndex (-1 sentinel if absent)"
-    OutputResult --> [*]
+    InputPhase --> FormatPrintPhase: "Pass populated array to output formatter"
+    
+    state FormatPrintPhase {
+        [*] --> FormatElement: "std::setw(width) << a[i]"
+        FormatElement --> NextPrint: "Advance to i + 1"
+        NextPrint --> FormatElement: "i < n"
+        NextPrint --> EmitNewline: "i >= n -> output newline"
+        EmitNewline --> [*]
+    }
+    
+    FormatPrintPhase --> [*]
 ```
 
 ### Module Architecture Diagram (`classDiagram`)
 
 ```mermaid
 classDiagram
-    namespace Lb6 {
-        class Task2 {
-            +isEven(value: int) bool
-            +initArrayIterative(a: vector~int~, minVal: int, maxVal: int) void
-            +printArrayIterative(out: ostream, a: vector~int~) void
-            +findMaxEvenIndexIterative(a: vector~int~) int
-            +initArrayRecursive(a: vector~int~, minVal: int, maxVal: int, i: size_t) void
-            +printArrayRecursive(out: ostream, a: vector~int~, i: size_t) void
-            +findMaxEvenIndexRecursive(a: vector~int~, i: size_t, bestIndex: int) int
-            +maxEvenIndex(values: vector~int~, recursive: bool) int
+    namespace Task3 {
+        class OrdinaryArrayIO {
+            +inputArrayIterative(a: int*, n: size_t, in: istream, prompt: ostream*) void
+            +printArrayIterative(a: int*, n: size_t, out: ostream, fieldWidth: int) void
+            +inputArrayRecursive(a: int*, n: size_t, i: size_t, in: istream, prompt: ostream*) void
+            +printArrayRecursive(a: int*, n: size_t, i: size_t, out: ostream, fieldWidth: int) void
+        }
+
+        class TemplateArrayIO {
+            +inputArrayIterativeTemplate~T~(a: T*, n: size_t, in: istream, prompt: ostream*) void
+            +printArrayIterativeTemplate~T~(a: T*, n: size_t, out: ostream, fieldWidth: int) void
+            +inputArrayRecursiveTemplate~T~(a: T*, n: size_t, i: size_t, in: istream, prompt: ostream*) void
+            +printArrayRecursiveTemplate~T~(a: T*, n: size_t, i: size_t, out: ostream, fieldWidth: int) void
         }
     }
+
+    class Lb6Main {
+        +runInputFunctionsTask(recursive: bool) void
+    }
+
+    Lb6Main ..> OrdinaryArrayIO : invokes ordinary
+    Lb6Main ..> TemplateArrayIO : invokes template
 ```

@@ -78,24 +78,39 @@ void runInputFunctionsTask(const bool recursive) {
     double reals[size]{};
     std::string words[size];
     if (recursive) {
+        std::cout << "[Recursive approach]\n";
         Common::Recursion::printSummary(std::cout, "ArrayInput (recursive)", static_cast<int>(size + 1));
+        std::cout << "Enter three integers:\n";
+        Lb6::Task3::inputArrayRecursive(integers, size, 0, std::cin, &std::cout);
+        std::cout << "Formatted integers:\n";
+        Lb6::Task3::printArrayRecursive(integers, size, 0, std::cout);
+
+        std::cout << "Enter three doubles:\n";
+        Lb6::Task3::inputArrayRecursiveTemplate(reals, size, 0, std::cin, &std::cout);
+        std::cout << "Formatted doubles:\n";
+        Lb6::Task3::printArrayRecursiveTemplate(reals, size, 0, std::cout);
+
+        std::cout << "Enter three strings:\n";
+        Lb6::Task3::inputArrayRecursiveTemplate(words, size, 0, std::cin, &std::cout);
+        std::cout << "Formatted strings:\n";
+        Lb6::Task3::printArrayRecursiveTemplate(words, size, 0, std::cout);
+    } else {
+        std::cout << "[Iterative approach]\n";
+        std::cout << "Enter three integers:\n";
+        Lb6::Task3::inputArrayIterative(integers, size, std::cin, &std::cout);
+        std::cout << "Formatted integers:\n";
+        Lb6::Task3::printArrayIterative(integers, size, std::cout);
+
+        std::cout << "Enter three doubles:\n";
+        Lb6::Task3::inputArrayIterativeTemplate(reals, size, std::cin, &std::cout);
+        std::cout << "Formatted doubles:\n";
+        Lb6::Task3::printArrayIterativeTemplate(reals, size, std::cout);
+
+        std::cout << "Enter three strings:\n";
+        Lb6::Task3::inputArrayIterativeTemplate(words, size, std::cin, &std::cout);
+        std::cout << "Formatted strings:\n";
+        Lb6::Task3::printArrayIterativeTemplate(words, size, std::cout);
     }
-    std::cout << "Enter three integers:\n";
-    if (recursive) Lb6::Recursive::input(std::cin, std::cout, integers, size);
-    else Lb6::Iterative::input(std::cin, std::cout, integers, size);
-    std::cout << "Enter three doubles:\n";
-    if (recursive) Lb6::inputTemplateRecursive(std::cin, std::cout, reals, size);
-    else Lb6::inputTemplate(std::cin, std::cout, reals, size);
-    std::cout << "Enter three strings:\n";
-    if (recursive) Lb6::inputTemplateRecursive(std::cin, std::cout, words, size);
-    else Lb6::inputTemplate(std::cin, std::cout, words, size);
-    std::cout << "int: ";
-    for (int value : integers) std::cout << value << ' ';
-    std::cout << "\ndouble: " << std::fixed << std::setprecision(2);
-    for (double value : reals) std::cout << value << ' ';
-    std::cout << "\nstring: ";
-    for (const auto& value : words) std::cout << value << ' ';
-    std::cout << '\n';
 }
 
 void runDynamicArrayTask(const bool recursive) {
