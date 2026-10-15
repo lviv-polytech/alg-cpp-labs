@@ -33,7 +33,7 @@ void runTaylorTableTask() {
 
     Lb5::UI::printTaylorHeader(std::cout);
     for (const auto& [x, result] : Lb5::tabulateTaylor(start, end, step, epsilon)) {
-        std::cout << "| " << std::setw(8) << x << " | ";
+        std::cout << "| " << std::setw(13) << x << " | ";
         if (x > 0.0) std::cout << std::setw(14) << std::log(x);
         else std::cout << std::setw(14) << "undefined";
         std::cout << " | ";
@@ -63,9 +63,9 @@ void runHelperTableTask() {
     for (int j = 0; j <= n; ++j) {
         const double g = start + j * step;
         const auto value = Lb5::nestedExpression(g);
-        std::cout << "| " << std::setw(8) << g << " | ";
+        std::cout << "| " << std::setw(13) << g << " | ";
         if (value) std::cout << std::setw(14) << *value;
-        else std::cout << "undefined";
+        else std::cout << std::setw(14) << "undefined";
         std::cout << " |\n";
     }
     Lb5::UI::printTwoColumnFooter(std::cout);
