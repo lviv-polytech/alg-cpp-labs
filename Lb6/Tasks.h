@@ -7,6 +7,11 @@
 #include <string>
 #include <vector>
 
+#include "task1/ArraySelection.h"
+#include "task2/EvenIndexSearch.h"
+#include "task3/ArrayInput.h"
+#include "task4/DynamicArrayOperations.h"
+
 namespace Lb6 {
 
 constexpr std::size_t SELECTION_SIZE = 25;

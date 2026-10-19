@@ -12,36 +12,63 @@
 namespace {
 
 void runSelectedArrayTask(const bool recursive) {
-    std::cout << "\n=== Task 1: Selected Array Processing ===\n";
-    auto values = Lb6::createArray(static_cast<unsigned>(std::time(nullptr)));
-    std::cout << "Original array:\n";
-    Lb6::printArray(std::cout, values);
+    std::cout << "\n=== Task 1: Selected Array Processing (Variant 17) ===\n";
+    std::vector<int> values(Lb6::Task1::SELECTION_SIZE);
     if (recursive) {
+        std::cout << "[Recursive approach]\n";
         Common::Recursion::printSummary(std::cout, "ArraySelection (recursive)", 26);
+        Lb6::Task1::generateArrayRec(values, Lb6::Task1::DEFAULT_LOW, Lb6::Task1::DEFAULT_HIGH, 0);
+        std::cout << "Original array:\n";
+        Lb6::Task1::printArrayRec(std::cout, values, 0);
+
+        const int count = Lb6::Task1::countElementsRec(values, 0);
+        const int sum = Lb6::Task1::sumElementsRec(values, 0);
+        Lb6::Task1::zeroElementsRec(values, 0);
+
+        std::cout << "Count = " << count << ", Sum = " << sum << '\n';
+        std::cout << "Modified array (selected elements replaced by 0):\n";
+        Lb6::Task1::printArrayRec(std::cout, values, 0);
+    } else {
+        std::cout << "[Iterative approach]\n";
+        Lb6::Task1::generateArray(values, Lb6::Task1::DEFAULT_LOW, Lb6::Task1::DEFAULT_HIGH);
+        std::cout << "Original array:\n";
+        Lb6::Task1::printArray(std::cout, values);
+
+        const int count = Lb6::Task1::countElements(values);
+        const int sum = Lb6::Task1::sumElements(values);
+        Lb6::Task1::zeroElements(values);
+
+        std::cout << "Count = " << count << ", Sum = " << sum << '\n';
+        std::cout << "Modified array (selected elements replaced by 0):\n";
+        Lb6::Task1::printArray(std::cout, values);
     }
-    const auto result = Lb6::processSelection(values, recursive);
-    std::cout << "count = " << result.count << ", sum = " << result.sum << '\n';
-    std::cout << "Modified array (selected elements replaced by 0):\n";
-    Lb6::printArray(std::cout, values);
 }
 
 void runMaxEvenIndexTask(const bool recursive) {
-    std::cout << "\n=== Task 2: Largest Even Value Index ===\n";
+    std::cout << "\n=== Task 2: Largest Even Value Index (Variant 17) ===\n";
     std::size_t n = 0;
     std::cout << "-> array size n: ";
-    if (!Common::IO::read(std::cin, n)) return;
-    std::mt19937 engine(static_cast<unsigned>(std::time(nullptr)));
-    std::uniform_int_distribution<int> distribution(-50, 50);
+    if (!Common::IO::read(std::cin, n) || n == 0) return;
     std::vector<int> values(n);
-    for (int& value : values) value = distribution(engine);
-    std::cout << "Generated array:\n";
-    Lb6::printArray(std::cout, values);
+
     if (recursive) {
+        std::cout << "[Recursive approach]\n";
         Common::Recursion::printSummary(std::cout, "maxEvenIndex (recursive)", static_cast<int>(n + 1));
+        Lb6::Task2::initArrayRecursive(values, Lb6::Task2::DEFAULT_MIN_VAL, Lb6::Task2::DEFAULT_MAX_VAL, 0);
+        std::cout << "Generated array:\n";
+        Lb6::Task2::printArrayRecursive(std::cout, values, 0);
+        const int index = Lb6::Task2::findMaxEvenIndexRecursive(values, 0, -1);
+        if (index < 0) std::cout << "even elements not found\n";
+        else std::cout << "largest even value index = " << index << " (value = " << values[index] << ")\n";
+    } else {
+        std::cout << "[Iterative approach]\n";
+        Lb6::Task2::initArrayIterative(values, Lb6::Task2::DEFAULT_MIN_VAL, Lb6::Task2::DEFAULT_MAX_VAL);
+        std::cout << "Generated array:\n";
+        Lb6::Task2::printArrayIterative(std::cout, values);
+        const int index = Lb6::Task2::findMaxEvenIndexIterative(values);
+        if (index < 0) std::cout << "even elements not found\n";
+        else std::cout << "largest even value index = " << index << " (value = " << values[index] << ")\n";
     }
-    const int index = Lb6::maxEvenIndex(values, recursive);
-    if (index < 0) std::cout << "even elements not found\n";
-    else std::cout << "largest even value index = " << index << " (value = " << values[index] << ")\n";
 }
 
 void runInputFunctionsTask(const bool recursive) {
@@ -51,24 +78,39 @@ void runInputFunctionsTask(const bool recursive) {
     double reals[size]{};
     std::string words[size];
     if (recursive) {
+        std::cout << "[Recursive approach]\n";
         Common::Recursion::printSummary(std::cout, "ArrayInput (recursive)", static_cast<int>(size + 1));
+        std::cout << "Enter three integers:\n";
+        Lb6::Task3::inputArrayRecursive(integers, size, 0, std::cin, &std::cout);
+        std::cout << "Formatted integers:\n";
+        Lb6::Task3::printArrayRecursive(integers, size, 0, std::cout);
+
+        std::cout << "Enter three doubles:\n";
+        Lb6::Task3::inputArrayRecursiveTemplate(reals, size, 0, std::cin, &std::cout);
+        std::cout << "Formatted doubles:\n";
+        Lb6::Task3::printArrayRecursiveTemplate(reals, size, 0, std::cout);
+
+        std::cout << "Enter three strings:\n";
+        Lb6::Task3::inputArrayRecursiveTemplate(words, size, 0, std::cin, &std::cout);
+        std::cout << "Formatted strings:\n";
+        Lb6::Task3::printArrayRecursiveTemplate(words, size, 0, std::cout);
+    } else {
+        std::cout << "[Iterative approach]\n";
+        std::cout << "Enter three integers:\n";
+        Lb6::Task3::inputArrayIterative(integers, size, std::cin, &std::cout);
+        std::cout << "Formatted integers:\n";
+        Lb6::Task3::printArrayIterative(integers, size, std::cout);
+
+        std::cout << "Enter three doubles:\n";
+        Lb6::Task3::inputArrayIterativeTemplate(reals, size, std::cin, &std::cout);
+        std::cout << "Formatted doubles:\n";
+        Lb6::Task3::printArrayIterativeTemplate(reals, size, std::cout);
+
+        std::cout << "Enter three strings:\n";
+        Lb6::Task3::inputArrayIterativeTemplate(words, size, std::cin, &std::cout);
+        std::cout << "Formatted strings:\n";
+        Lb6::Task3::printArrayIterativeTemplate(words, size, std::cout);
     }
-    std::cout << "Enter three integers:\n";
-    if (recursive) Lb6::Recursive::input(std::cin, std::cout, integers, size);
-    else Lb6::Iterative::input(std::cin, std::cout, integers, size);
-    std::cout << "Enter three doubles:\n";
-    if (recursive) Lb6::inputTemplateRecursive(std::cin, std::cout, reals, size);
-    else Lb6::inputTemplate(std::cin, std::cout, reals, size);
-    std::cout << "Enter three strings:\n";
-    if (recursive) Lb6::inputTemplateRecursive(std::cin, std::cout, words, size);
-    else Lb6::inputTemplate(std::cin, std::cout, words, size);
-    std::cout << "int: ";
-    for (int value : integers) std::cout << value << ' ';
-    std::cout << "\ndouble: " << std::fixed << std::setprecision(2);
-    for (double value : reals) std::cout << value << ' ';
-    std::cout << "\nstring: ";
-    for (const auto& value : words) std::cout << value << ' ';
-    std::cout << '\n';
 }
 
 void runDynamicArrayTask(const bool recursive) {
@@ -77,23 +119,52 @@ void runDynamicArrayTask(const bool recursive) {
     std::cout << "-> array size n: ";
     if (!Common::IO::read(std::cin, n)) return;
     if (n == 0) throw std::invalid_argument("Array size must be positive.");
-    std::mt19937 engine(static_cast<unsigned>(std::time(nullptr)));
-    std::uniform_int_distribution<int> distribution(-20, 20);
+
     std::vector<double> values(n);
-    for (double& value : values) value = distribution(engine) / 2.0;
-    std::cout << "Original array:\n";
-    Lb6::printArray(std::cout, values);
     if (recursive) {
+        std::cout << "[Recursive approach]\n";
         Common::Recursion::printSummary(std::cout, "DynamicArrayOperations (recursive)", static_cast<int>(n + 1));
+        Lb6::Task4::initArrayRecursive(values, -5.0, 5.0, 0);
+        std::cout << "Original array:\n";
+        Lb6::Task4::printArrayRecursive(std::cout, values, 0);
+
+        int posCount = Lb6::Task4::countPositiveRecursive(values, 0);
+        int lastZero = Lb6::Task4::findLastZeroIndexRecursive(values, static_cast<int>(n) - 1);
+        double sumAfter = Lb6::Task4::sumAfterLastZeroRecursive(values);
+
+        std::cout << "Positive elements count = " << posCount << '\n';
+        if (lastZero < 0) {
+            std::cout << "No zero elements found in array (sum after last zero = 0.0)\n";
+        } else {
+            std::cout << "Last zero index = " << lastZero
+                      << ", sum after last zero = " << std::fixed << std::setprecision(2) << sumAfter << '\n';
+        }
+
+        Lb6::Task4::partitionByIntPartRecursive(values, 0, 0);
+        std::cout << "Array after stable partition (trunc(x) <= 1 before others):\n";
+        Lb6::Task4::printArrayRecursive(std::cout, values, 0);
+    } else {
+        std::cout << "[Iterative approach]\n";
+        Lb6::Task4::initArrayIterative(values, -5.0, 5.0);
+        std::cout << "Original array:\n";
+        Lb6::Task4::printArrayIterative(std::cout, values);
+
+        int posCount = Lb6::Task4::countPositiveIterative(values);
+        int lastZero = Lb6::Task4::findLastZeroIndexIterative(values);
+        double sumAfter = Lb6::Task4::sumAfterLastZeroIterative(values);
+
+        std::cout << "Positive elements count = " << posCount << '\n';
+        if (lastZero < 0) {
+            std::cout << "No zero elements found in array (sum after last zero = 0.0)\n";
+        } else {
+            std::cout << "Last zero index = " << lastZero
+                      << ", sum after last zero = " << std::fixed << std::setprecision(2) << sumAfter << '\n';
+        }
+
+        Lb6::Task4::partitionByIntPartIterative(values);
+        std::cout << "Array after stable partition (trunc(x) <= 1 before others):\n";
+        Lb6::Task4::printArrayIterative(std::cout, values);
     }
-    std::cout << "positive count = " << Lb6::Dynamic::countPositive(values, recursive) << '\n';
-    const int lastZero = Lb6::Dynamic::lastZeroIndex(values, recursive);
-    if (lastZero < 0) std::cout << "no zero elements; sum is undefined\n";
-    else std::cout << "sum after last zero = "
-                   << Lb6::Dynamic::sumAfter(values, lastZero, recursive) << '\n';
-    Lb6::Dynamic::stablePartition(values, recursive);
-    std::cout << "Array after stable partition (< 2 before >= 2):\n";
-    Lb6::printArray(std::cout, values);
 }
 
 } // namespace

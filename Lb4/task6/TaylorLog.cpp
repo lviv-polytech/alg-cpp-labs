@@ -31,6 +31,9 @@ std::optional<TaylorResult> taylorLog(const double x, const double epsilon) {
 
 std::vector<std::pair<double, std::optional<TaylorResult>>> tabulateTaylor(
     const double start, const double end, const double step, const double epsilon) {
+    if (!std::isfinite(epsilon) || epsilon <= 0.0) {
+        throw std::invalid_argument("epsilon must be finite and positive.");
+    }
     return Core::tabulate(start, end, step, [=](const double x) { return taylorLog(x, epsilon); });
 }
 

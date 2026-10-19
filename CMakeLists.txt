@@ -157,3 +157,9 @@ add_executable(Lb7_tests
 )
 target_link_libraries(Lb7_tests PRIVATE Common)
 add_test(NAME Lb7_Test COMMAND Lb7_tests)
+
+add_executable(sandbox
+        sandbox/main.cpp
+)
+target_link_libraries(sandbox PRIVATE Common)
+
