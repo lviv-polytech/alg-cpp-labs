@@ -1,32 +1,39 @@
 #pragma once
 
 #include <iostream>
+#include <optional>
+#include "../Tasks.h"
 
 namespace Lb5::UI {
 
-    /// <summary>
-    /// Prints a two-column formatted table header for coordinates (x, valueLabel).
-    /// </summary>
-    /// <param name="out">Output stream.</param>
-    /// <param name="valueLabel">Column title for the calculated values.</param>
+    /**
+     * @brief Prints a two-column formatted table title and header for coordinates (x, valueLabel).
+     */
     void printTwoColumnHeader(std::ostream& out, const char* valueLabel);
 
-    /// <summary>
-    /// Prints a two-column formatted table footer border.
-    /// </summary>
-    /// <param name="out">Output stream.</param>
+    /**
+     * @brief Prints a single row of a two-column table without breaking column borders.
+     */
+    void printTwoColumnRow(std::ostream& out, double x, std::optional<double> value);
+
+    /**
+     * @brief Prints a two-column formatted table footer border.
+     */
     void printTwoColumnFooter(std::ostream& out);
 
-    /// <summary>
-    /// Prints the header for Taylor series tabulation table.
-    /// </summary>
-    /// <param name="out">Output stream.</param>
+    /**
+     * @brief Prints the title and column header for Taylor series tabulation table.
+     */
     void printTaylorHeader(std::ostream& out);
 
-    /// <summary>
-    /// Prints the footer border for Taylor series tabulation table.
-    /// </summary>
-    /// <param name="out">Output stream.</param>
+    /**
+     * @brief Prints a single row of the Taylor series table without breaking column borders.
+     */
+    void printTaylorRow(std::ostream& out, double x, std::optional<TaylorResult> result);
+
+    /**
+     * @brief Prints the footer border for Taylor series tabulation table.
+     */
     void printTaylorFooter(std::ostream& out);
 
 } // namespace Lb5::UI

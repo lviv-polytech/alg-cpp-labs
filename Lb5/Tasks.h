@@ -33,13 +33,23 @@ struct TaylorResult {
 };
 
 /// <summary>
-/// Evaluates the recurrence term a_{n+1} = a_n * ((x - 1)/x) * (n / (n + 1)).
+/// Evaluates the recurrence term a_n = a_{n-1} * ((x - 1) / x) * (n / (n + 1)) for n >= 1.
 /// </summary>
 /// <param name="x">Argument x != 0.</param>
 /// <param name="n">Term index n &gt;= 1.</param>
-/// <param name="previous">Value of term a_n.</param>
-/// <returns>Next term value.</returns>
+/// <param name="previous">Value of term a_{n-1}.</param>
+/// <returns>Next term value a_n.</returns>
 double nextTaylorTerm(double x, int n, double previous);
+
+/// <summary>
+/// Adds Taylor series terms for ln(x) until the absolute value of the term falls below epsilon,
+/// writing the term count to the output reference parameter `terms`.
+/// </summary>
+/// <param name="x">Argument x &gt; 0.5.</param>
+/// <param name="epsilon">Absolute error tolerance &gt; 0.</param>
+/// <param name="terms">Output reference parameter for the number of terms.</param>
+/// <returns>Accumulated Taylor series sum.</returns>
+double taylorSum(double x, double epsilon, int& terms);
 
 /// <summary>
 /// Adds Taylor series terms for ln(x) until the absolute value of the term falls below epsilon.

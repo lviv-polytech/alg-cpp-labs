@@ -20,6 +20,10 @@ double nextTaylorTerm(const double x, const int n, const double previous) {
     return Task2::nextTaylorTerm(x, n, previous);
 }
 
+double taylorSum(const double x, const double epsilon, int& terms) {
+    return Task2::taylorSum(x, epsilon, terms);
+}
+
 TaylorResult taylorSum(const double x, const double epsilon) {
     const auto result = Task2::taylorSum(x, epsilon);
     return TaylorResult{result.sum, result.terms};

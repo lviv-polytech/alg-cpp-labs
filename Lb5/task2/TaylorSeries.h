@@ -6,47 +6,63 @@
 
 namespace Lb5::Task2 {
 
-    /// <summary>
-    /// Result structure for Taylor series approximation of ln(x).
-    /// </summary>
+    /**
+     * @brief Result structure for Taylor series approximation of ln(x).
+     */
     struct TaylorResult {
         double sum;
         int terms;
     };
 
-    /// <summary>
-    /// Calculates the next Taylor term from previous term using recurrence relation:
-    /// a_{n+1} = a_n * ((x - 1) / x) * (n / (n + 1)).
-    /// </summary>
-    /// <param name="x">The evaluation point x != 0.</param>
-    /// <param name="n">Current term index n &gt;= 1.</param>
-    /// <param name="previous">Value of term a_n.</param>
-    /// <returns>Computed value of next term a_{n+1}.</returns>
-    /// <exception cref="std::invalid_argument">Thrown if n &lt; 1 or x == 0.</exception>
+    /**
+     * @brief Calculates the next Taylor series term a_n from the previous term a_{n-1}
+     * using the recurrence relation for Variant 17:
+     *   a_0 = (x - 1) / x
+     *   a_n = a_{n-1} * ((x - 1) / x) * (n / (n + 1)), for n >= 1.
+     *
+     * @param x The evaluation point (must be finite and x != 0).
+     * @param n Current step index (n >= 1, equal to the count of terms already accumulated).
+     * @param previous Value of previous term a_{n-1}.
+     * @return Computed value of term a_n.
+     * @throws std::invalid_argument If n < 1, x == 0, or inputs are non-finite.
+     */
     double nextTaylorTerm(double x, int n, double previous);
 
-    /// <summary>
-    /// Evaluates the Taylor series approximation for ln(x) until term magnitude is below epsilon:
-    /// ln(x) = sum_{n=1}^{infinity} (1/n) * ((x - 1) / x)^n.
-    /// Convergence region is x &gt; 0.5.
-    /// </summary>
-    /// <param name="x">Argument x &gt; 0.5.</param>
-    /// <param name="epsilon">Absolute error tolerance &gt; 0.</param>
-    /// <returns>TaylorResult containing sum and term count.</returns>
-    /// <exception cref="std::invalid_argument">Thrown if arguments are non-finite or epsilon &lt;= 0.</exception>
-    /// <exception cref="std::domain_error">Thrown if x &lt;= 0.5 (outside convergence domain).</exception>
-    /// <exception cref="std::runtime_error">Thrown if maximum term limit is exceeded.</exception>
+    /**
+     * @brief Evaluates the Taylor series approximation for ln(x) using a do-while loop
+     * until the absolute value of the added term is strictly less than epsilon:
+     *   ln(x) = sum_{n=0}^{infinity} ((x - 1)^{n+1}) / ((n + 1) * x^{n+1}), for x > 0.5.
+     * Writes the number of evaluated terms into the output reference parameter `terms`.
+     *
+     * @param x Argument x > 0.5.
+     * @param epsilon Absolute error tolerance > 0.
+     * @param[out] terms Output parameter receiving the number of accumulated terms.
+     * @return Accumulated Taylor series sum.
+     * @throws std::invalid_argument If arguments are non-finite or epsilon <= 0.
+     * @throws std::domain_error If x <= 0.5 (outside convergence domain).
+     * @throws std::runtime_error If maximum term limit is exceeded.
+     */
+    double taylorSum(double x, double epsilon, int& terms);
+
+    /**
+     * @brief Evaluates the Taylor series approximation for ln(x) and returns a TaylorResult struct.
+     *
+     * @param x Argument x > 0.5.
+     * @param epsilon Absolute error tolerance > 0.
+     * @return TaylorResult containing sum and term count.
+     */
     TaylorResult taylorSum(double x, double epsilon);
 
-    /// <summary>
-    /// Tabulates the Taylor series for ln(x) over [start, end] with step.
-    /// Points with x &lt;= 0.5 return std::nullopt.
-    /// </summary>
-    /// <param name="start">Interval start.</param>
-    /// <param name="end">Interval end.</param>
-    /// <param name="step">Grid step.</param>
-    /// <param name="epsilon">Accuracy threshold.</param>
-    /// <returns>Vector of (x, optional TaylorResult) pairs.</returns>
+    /**
+     * @brief Tabulates the Taylor series for ln(x) over [start, end] with step dx.
+     * Points with x <= 0.5 return std::nullopt.
+     *
+     * @param start Interval start x_start.
+     * @param end Interval end x_end.
+     * @param step Grid step dx > 0.
+     * @param epsilon Accuracy threshold eps > 0.
+     * @return Vector of (x, optional TaylorResult) pairs.
+     */
     std::vector<std::pair<double, std::optional<TaylorResult>>> tabulateTaylor(
         double start, double end, double step, double epsilon);
 
