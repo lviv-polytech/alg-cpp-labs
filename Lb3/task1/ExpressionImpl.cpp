@@ -1,48 +1,56 @@
 #include <cmath>
 #include <iostream>
-#include <ostream>
 
 namespace {
 
+    // Перша гілка: 4x^7 - x^5 + x^3 - 2
     double first(const double x) {
-        // B = 5x^3 - x^2 - 2
-        return 5.0 * std::pow(x, 3) - std::pow(x, 2) - 2.0;
+        return 4.0 * std::pow(x, 7) - std::pow(x, 5) + std::pow(x, 3) - 2.0;
     }
 
+    // Друга гілка: arctg((|x| + 1) / 2) + 8.3x
     double second(const double x) {
-        // B = arctg((|x| + 1) / 2) + 8.3x
         return std::atan((std::abs(x) + 1.0) / 2.0) + (8.3 * x);
     }
 
+    // Третя гілка: ln|2x + e^(4x + 1)|
     double third(const double x) {
-        // B = ln|2x + e^(4+x)|
-        return std::log(std::abs(2.0 * x + std::exp(4.0 + x)));
+        return std::log(std::abs(2.0 * x + std::exp(4.0 * x + 1.0)));
     }
 
+    // Спільна частина: x^2 + 1
+    double baseTerm(const double x) {
+        return std::pow(x, 2) + 1.0;
+    }
+
+    // Скорочена форма розгалуження
     double calcShort(const double x) {
-        double res = 0.0;
-        if (x < 4) {
-            res = first(x);
+        double branch = 0.0;
+        if (x < 4.0) {
+            branch = first(x);
         }
-        if (4 <= x && x < 7) {
-            res = second(x);
+        if (x >= 4.0 && x < 7.0) {
+            branch = second(x);
         }
-        if (x >= 7) {
-            res = third(x);
+        if (x >= 7.0) {
+            branch = third(x);
         }
-        return res;
+        return baseTerm(x) + branch;
     }
 
+    // Повна форма розгалуження
     double calcLong(const double x) {
-        if (x < 4) {
-            return first(x);
+        double branch = 0.0;
+        if (x < 4.0) {
+            branch = first(x);
         } else {
-            if (x < 7) {
-                return second(x);
+            if (x < 7.0) {
+                branch = second(x);
             } else {
-                return third(x);
+                branch = third(x);
             }
         }
+        return baseTerm(x) + branch;
     }
 }
 
@@ -55,7 +63,7 @@ namespace Task1::Expression {
         std::cout << "Result long form: " << rsLong << std::endl;
 
         if (std::abs(rsShort - rsLong) > 1e-9) {
-            std::cout << "\nResult isn't correct";
+            std::cout << "\nResult isn't correct" << std::endl;
         }
         return rsShort;
     }
