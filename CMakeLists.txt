@@ -89,6 +89,7 @@ add_executable(Lb5
         Lb5/Lb5.cpp
         Lb5/Tasks.cpp
         Lb5/UI/TablePrinter.cpp
+        Lb5/task0/IntroCalculation.cpp
         Lb5/task1/RationalExpression.cpp
         Lb5/task2/TaylorSeries.cpp
         Lb5/task3/PiecewiseExpression.cpp
@@ -101,6 +102,7 @@ add_executable(Lb5_tests
         Lb5.Tests/Lb5.Tests.cpp
         Lb5/Tasks.cpp
         Lb5/UI/TablePrinter.cpp
+        Lb5/task0/IntroCalculation.cpp
         Lb5/task1/RationalExpression.cpp
         Lb5/task2/TaylorSeries.cpp
         Lb5/task3/PiecewiseExpression.cpp

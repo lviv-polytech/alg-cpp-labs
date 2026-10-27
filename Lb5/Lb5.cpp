@@ -9,6 +9,17 @@
 
 namespace {
 
+void runIntroCalculationTask() {
+    std::cout << "\n=== Task 0: Introductory Calculation (Task 5.0) ===\n";
+    double a = 0.0, b = 0.0;
+    std::cout << "a = ";
+    if (!Common::IO::read(std::cin, a)) return;
+    std::cout << "b = ";
+    if (!Common::IO::read(std::cin, b)) return;
+    const double res = Lb5::calculate(a, b);
+    std::cout << "Result = " << res << '\n';
+}
+
 void runExpressionTask() {
     std::cout << "\n=== Task 1: Rational Expression ===\n";
     double a = 0.0, b = 0.0;
@@ -97,12 +108,13 @@ int main() {
     std::cout << std::fixed << std::setprecision(8);
     while (true) {
         std::cout << "\nAvailable tasks:\n";
+        std::cout << "0. Introductory calculation (Task 5.0: (x^2 + y) / 2)\n";
         std::cout << "1. Rational expression evaluation\n";
         std::cout << "2. Taylor series table for ln(x)\n";
         std::cout << "3. Piecewise helper table\n";
         std::cout << "4. Recursive sums\n";
         std::cout << "5. Geometric progression\n";
-        std::cout << "Write 0 for exit\n";
+        std::cout << "Write 9 (or negative/EOF) for exit\n";
         std::cout << "Choice: ";
 
         int task = 0;
@@ -115,12 +127,14 @@ int main() {
             continue;
         }
 
-        if (task == 0) {
+        if (task == 9 || task < 0) {
             return 0;
         }
 
         try {
-            if (task == 1) {
+            if (task == 0) {
+                runIntroCalculationTask();
+            } else if (task == 1) {
                 runExpressionTask();
             } else if (task == 2) {
                 runTaylorTableTask();
@@ -131,7 +145,7 @@ int main() {
             } else if (task == 5) {
                 runGeometricTask();
             } else {
-                std::cout << "Invalid choice (max: 5)\n";
+                std::cout << "Invalid choice (0..5, 9 for exit)\n";
             }
         } catch (const std::exception& error) {
             std::cerr << "Error: " << error.what() << '\n';
