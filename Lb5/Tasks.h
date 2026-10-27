@@ -8,6 +8,15 @@
 namespace Lb5 {
 
 /// <summary>
+/// Introductory calculation for Task 5.0:
+/// calculate(x, y) = (x^2 + y) / 2.0.
+/// </summary>
+/// <param name="x">First argument.</param>
+/// <param name="y">Second argument.</param>
+/// <returns>Computed value.</returns>
+double calculate(double x, double y);
+
+/// <summary>
 /// Rational function h(x, y, z) = (x + y + z) / (x^2 + y^2 + z^2).
 /// </summary>
 /// <param name="x">First argument.</param>

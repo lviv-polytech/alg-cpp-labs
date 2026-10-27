@@ -38,6 +38,29 @@ void requireThrows(Callable&& fn, const char* msg) {
 
 int main() {
     // ------------------------------------------------------------------------
+    // Task 5.0: Introductory Calculation & Assertion Test
+    // ------------------------------------------------------------------------
+    {
+        // 1. Вхідні параметри
+        const double test_x = 2.0;
+        const double test_y = 6.0;
+
+        // 2. Очікуваний результат: (2^2 + 6) / 2 = 5.0
+        const double expected = 5.0;
+
+        // 3. Фактичний виклик піддослідної функції
+        const double actual = Lb5::calculate(test_x, test_y);
+
+        // 4. Твердження рівності (допустима точність порівняння)
+        near(actual, expected, 0.00001);
+    }
+    near(Lb5::calculate(0.0, 0.0), 0.0, 0.00001);
+    near(Lb5::calculate(-2.0, 6.0), 5.0, 0.00001);
+    near(Lb5::calculate(3.0, 1.0), 5.0, 0.00001);
+    near(Lb5::calculate(1.5, 2.5), 2.375, 0.00001);
+    near(Lb5::calculate(-3.0, -1.0), 4.0, 0.00001);
+
+    // ------------------------------------------------------------------------
     // Task 5.1: Rational Expression (Variant 17)
     // ------------------------------------------------------------------------
     near(Lb5::expression(1.0, 1.0), 1.25);

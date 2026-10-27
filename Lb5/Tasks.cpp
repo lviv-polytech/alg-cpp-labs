@@ -1,5 +1,6 @@
 #include "Tasks.h"
 
+#include "task0/IntroCalculation.h"
 #include "task1/RationalExpression.h"
 #include "task2/TaylorSeries.h"
 #include "task3/PiecewiseExpression.h"
@@ -7,6 +8,10 @@
 #include "task5/GeometricProgression.h"
 
 namespace Lb5 {
+
+double calculate(const double x, const double y) {
+    return Task0::calculate(x, y);
+}
 
 double h(const double x, const double y, const double z) {
     return Task1::h(x, y, z);
